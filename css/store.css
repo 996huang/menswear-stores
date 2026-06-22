@@ -510,23 +510,133 @@ body {
   line-height: 1.5;
 }
 
-/* 一键生成按钮 */
+/* ===== 区块标题 ===== */
+.zone { margin-bottom: 16px; }
+.zone-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.zone-header h2 { margin: 0; }
+.zone-badge {
+  font-size: .65em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--border);
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* ===== 双模式选题按钮 ===== */
 .topic-card-action { margin-top: 10px; }
-.btn-topic-gen {
-  width: 100%;
-  padding: 8px 14px;
-  background: linear-gradient(135deg, rgba(63,185,80,.12), rgba(88,166,255,.08));
-  border: 1px solid rgba(63,185,80,.25);
-  color: var(--green);
+.topic-actions {
+  display: flex;
+  gap: 8px;
+}
+.btn-topic-product, .btn-topic-oral {
+  flex: 1;
+  padding: 8px 12px;
   border-radius: 8px;
   font-size: .78em;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
-  transition: background .2s;
+  transition: background .2s, border-color .2s;
+  -webkit-tap-highlight-color: transparent;
 }
-.btn-topic-gen:hover, .btn-topic-gen:active {
-  background: linear-gradient(135deg, rgba(63,185,80,.2), rgba(88,166,255,.12));
+.btn-topic-product {
+  background: linear-gradient(135deg, rgba(63,185,80,.12), rgba(63,185,80,.04));
+  border: 1px solid rgba(63,185,80,.3);
+  color: var(--green);
+}
+.btn-topic-product:hover, .btn-topic-product:active {
+  background: linear-gradient(135deg, rgba(63,185,80,.22), rgba(63,185,80,.1));
+}
+.btn-topic-oral {
+  background: linear-gradient(135deg, rgba(88,166,255,.12), rgba(88,166,255,.04));
+  border: 1px solid rgba(88,166,255,.3);
+  color: var(--blue);
+}
+.btn-topic-oral:hover, .btn-topic-oral:active {
+  background: linear-gradient(135deg, rgba(88,166,255,.22), rgba(88,166,255,.1));
+}
+
+/* ===== 口令复制按钮 ===== */
+.btn-copy-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  padding: 0 6px;
+  background: rgba(255,193,7,.12);
+  border: 1px solid rgba(255,193,7,.3);
+  border-radius: 4px;
+  color: #e6a817;
+  font-size: .6em;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-copy-code:active { background: rgba(255,193,7,.22); }
+
+/* ===== 选题内嵌结果区 ===== */
+.topic-result {
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(255,255,255,.02);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.topic-result-loading { text-align: center; padding: 20px; }
+.topic-result-error { text-align: center; padding: 12px; }
+.topic-result-error .error-msg { color: var(--red); font-size: .85em; margin-bottom: 8px; }
+.topic-analysis {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.topic-copy-card {
+  margin-bottom: 10px;
+  padding: 10px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.topic-copy-card:last-child { margin-bottom: 0; }
+
+/* ===== 仿写按钮 ===== */
+.btn-rewrite {
+  padding: 4px 10px;
+  background: rgba(255,152,0,.1);
+  border: 1px solid rgba(255,152,0,.3);
+  border-radius: 6px;
+  color: var(--orange);
+  font-size: .7em;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-rewrite:active { background: rgba(255,152,0,.2); }
+
+/* ===== 框架标签 ===== */
+.copy-framework {
+  margin-bottom: 8px;
+  font-size: .7em;
+}
+.fw-label {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(88,166,255,.08);
+  color: var(--blue);
+  margin: 1px 2px;
+  white-space: nowrap;
 }
 
 /* ===== 本地化提示 ===== */
