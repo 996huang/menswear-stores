@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>铜仁锦江店 · 仟徒男装</title>
 <link rel="stylesheet" href="../css/store.css">
 </head>
@@ -10,12 +10,9 @@
 
 <a href="../index.html" class="nav-back">← 返回9店总览</a>
 
-<!-- 门店头部 -->
 <div class="store-header">
 <h1>🏪 铜仁锦江店</h1>
-<p class="subtitle">📍 铜仁 · 碧江区 · 锦江商圈<br>
-风格：国际轻奢, 商务基础, 休闲日常<br>
-代理品牌：卡尔拉格斐(老佛爷), JOHN RICHMOND, RR/ORRDT, GUDUTTI(高级定制)</p>
+<p class="subtitle">📍 铜仁 · 碧江区 · 锦江商圈<br>风格：国际轻奢, 商务基础, 休闲日常<br>代理品牌：卡尔拉格斐(老佛爷), JOHN RICHMOND, RR/ORRDT, GUDUTTI(高级定制)</p>
 </div>
 
 <!-- ===== 📸 上传产品搭配图 ===== -->
@@ -23,39 +20,49 @@
 <h2>📸 上传产品搭配图 <span class="badge-status badge-ready" id="status-badge">🟢 就绪</span></h2>
 
 <div class="upload-methods">
-<!-- 方式一：快捷指令 -->
-<div class="upload-method">
-<span class="method-icon">📲</span>
-<div class="method-title">方式一：快捷指令（推荐）</div>
-<div class="method-desc">安装后一键打开上传文件夹，最方便</div>
-<a href="../shortcuts/tongren-jinjiang_upload.shortcut" class="method-action btn-green" download>📥 下载快捷指令</a>
-<div style="font-size:.65em;color:var(--muted);margin-top:4px">下载后用「快捷指令」App打开安装</div>
+<!-- 方式一：一次配置，长期使用 -->
+<div class="upload-method featured">
+<span class="method-icon">⚡</span>
+<div class="method-title">方式一：一次配置（推荐）</div>
+<div class="method-desc">配置一次，以后直接从相册拖入</div>
+<ol class="setup-steps" style="text-align:left;margin-top:6px">
+<li><span class="step-text">打开 iPhone <strong>「文件」</strong> App</span></li>
+<li><span class="step-text">浏览 → iCloud云盘 → 男装门店素材共享 → <strong>🏪铜仁锦江店</strong></span></li>
+<li><span class="step-text">长按 <strong>「📥上传产品图」</strong> 文件夹 → <strong>「添加到个人收藏」</strong></span></li>
+</ol>
+<div style="font-size:.68em;color:var(--green);margin-top:6px">✅ 配置后，文件夹出现在「文件」App 首页，随时拖入照片</div>
 </div>
 
-<!-- 方式二：手动上传 -->
+<!-- 方式二：网页拍照/选图 -->
+<div class="upload-method">
+<span class="method-icon">📷</span>
+<div class="method-title">方式二：拍照填写</div>
+<div class="method-desc">在下方表单拍照或从相册选择，填写产品信息后一键生成说明文件</div>
+<a href="#product-form" class="method-action btn-blue">📷 去拍照填写</a>
+</div>
+
+<!-- 方式三：手动拖入 -->
 <div class="upload-method">
 <span class="method-icon">📁</span>
-<div class="method-title">方式二：手动上传</div>
-<div class="method-desc">通过iOS「文件」App找到门店文件夹</div>
-<div style="font-size:.68em;color:var(--muted);text-align:left;margin:4px 0">
-文件App → iCloud云盘 → 男装门店素材共享 → 🏪铜仁锦江店 → 📥上传产品图
-</div>
-<div style="font-size:.65em;color:var(--blue);margin-top:2px">💡 长按文件夹 → 「添加到个人收藏」</div>
-</div>
-
-<!-- 方式三：网页表单 -->
-<div class="upload-method">
-<span class="method-icon">📝</span>
-<div class="method-title">方式三：快速描述</div>
-<div class="method-desc">在下方填写产品信息，生成说明文件后保存到上传文件夹</div>
-<a href="#product-form" class="method-action btn-outline">↓ 填写产品信息</a>
+<div class="method-title">方式三：直接拖入</div>
+<div class="method-desc">打开「文件」App → 个人收藏 → 📥上传产品图 → 从相册拖入图片</div>
+<div style="font-size:.68em;color:var(--muted);margin-top:4px">也可附带「产品说明.txt」描述卖点</div>
 </div>
 </div>
 
-<!-- 产品描述表单 -->
+<!-- 产品描述表单（含拍照） -->
 <div class="product-form" id="product-form" data-store-name="铜仁锦江店" data-store-id="tongren-jinjiang" data-store-brands="卡尔拉格斐(老佛爷), JOHN RICHMOND, RR/ORRDT, GUDUTTI(高级定制)">
-<h3>📝 快速生成产品说明</h3>
-<div class="form-row">
+<h3>📷 拍照 / 选图 + 填写产品信息</h3>
+
+<!-- 图片选择 -->
+<div class="photo-upload-area" onclick="document.getElementById('prod-photos').click()">
+<input type="file" id="prod-photos" accept="image/*" capture="environment" multiple style="display:none">
+<label class="photo-upload-label">📷 拍照 / 从相册选择</label>
+<div class="photo-upload-hint">支持 JPG/PNG/HEIC · 最多5张 · <span id="photo-count"></span></div>
+</div>
+<div class="photo-previews" id="photo-previews"></div>
+
+<div class="form-row" style="margin-top:12px">
 <div>
 <label>产品名称 *</label>
 <input type="text" id="prod-name" placeholder="例：老佛爷2026夏季POLO衫-经典黑">
@@ -92,7 +99,7 @@
 <div class="form-row">
 <div>
 <label>核心卖点 *</label>
-<textarea id="prod-features" placeholder="例：法国弹力珠地棉、200+透气孔/平方厘米、抗皱免烫、建筑感领口设计"></textarea>
+<textarea id="prod-features" placeholder="例：法国弹力珠地棉、200+透气孔、抗皱免烫、建筑感领口"></textarea>
 </div>
 <div>
 <label>目标客群</label>
@@ -110,7 +117,7 @@
 </div>
 <div id="preview-box" style="display:none;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:8px;font-size:.78em;white-space:pre-wrap;max-height:200px;overflow-y:auto;color:var(--muted)"></div>
 <div style="font-size:.72em;color:var(--muted);margin-top:8px">
-💡 <strong>操作提示</strong>：填写后点击「下载文件」→ 将下载的 .txt 文件保存到 iCloud「{folder_name} → 📥上传产品图」文件夹 → 系统自动检测并生成文案
+💡 <strong>操作提示</strong>：拍照/选图 → 填写信息 → 点击「下载文件」→ 将下载的 .txt 文件保存到「{folder_name} → 📥上传产品图」→ 系统30分钟内自动生成文案
 </div>
 </div>
 </div>
@@ -128,7 +135,7 @@
 <h2>🤖 AI 智能体</h2>
 <div class="status-panel">
 <span class="status-dot ready" id="status-dot"></span>
-<span id="status-text">智能体就绪中 — 上传产品图后自动触发</span>
+<span id="status-text">智能体就绪 — 上传产品图后30分钟内自动触发</span>
 </div>
 <div style="font-size:.8em;color:var(--muted);margin-top:8px">
 ✅ <strong>专属智能体</strong>：store-{sid}<br>
@@ -167,9 +174,7 @@
 <a href="#upload-zone" style="color:var(--green)">📸 上传产品图</a>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="toast"></div>
-
 <script src="../js/store-form.js"></script>
 </body>
 </html>
