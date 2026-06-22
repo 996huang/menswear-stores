@@ -15,119 +15,131 @@
 <p class="subtitle">📍 贵阳 · 南明区<br>风格：潮流轻奢, 韩系街头, 个性休闲<br>代理品牌：CNC, JOHN RICHMOND, RR/ORRDT, GUDUTTI(高级定制)</p>
 </div>
 
-<!-- ===== 📸 上传产品搭配图 ===== -->
+<!-- ===== 📸 上传产品搭配图 + AI生成 ===== -->
 <div class="upload-zone" id="upload-zone">
-<h2>📸 上传产品搭配图 <span class="badge-status badge-ready" id="status-badge">🟢 就绪</span></h2>
+<h2>📸 上传产品搭配图 · AI 生成文案</h2>
 
-<div class="upload-methods">
-<!-- 方式一：一次配置，长期使用 -->
-<div class="upload-method featured">
-<span class="method-icon">⚡</span>
-<div class="method-title">方式一：一次配置（推荐）</div>
-<div class="method-desc">配置一次，以后直接从相册拖入</div>
-<ol class="setup-steps" style="text-align:left;margin-top:6px">
-<li><span class="step-text">打开 iPhone <strong>「文件」</strong> App</span></li>
-<li><span class="step-text">浏览 → iCloud云盘 → 男装门店素材共享 → <strong>🏪贵阳店</strong></span></li>
-<li><span class="step-text">长按 <strong>「📥上传产品图」</strong> 文件夹 → <strong>「添加到个人收藏」</strong></span></li>
-</ol>
-<div style="font-size:.68em;color:var(--green);margin-top:6px">✅ 配置后，文件夹出现在「文件」App 首页，随时拖入照片</div>
-</div>
-
-<!-- 方式二：网页拍照/选图 -->
-<div class="upload-method">
-<span class="method-icon">📷</span>
-<div class="method-title">方式二：拍照填写</div>
-<div class="method-desc">在下方表单拍照或从相册选择，填写产品信息后一键生成说明文件</div>
-<a href="#product-form" class="method-action btn-blue">📷 去拍照填写</a>
-</div>
-
-<!-- 方式三：手动拖入 -->
-<div class="upload-method">
-<span class="method-icon">📁</span>
-<div class="method-title">方式三：直接拖入</div>
-<div class="method-desc">打开「文件」App → 个人收藏 → 📥上传产品图 → 从相册拖入图片</div>
-<div style="font-size:.68em;color:var(--muted);margin-top:4px">也可附带「产品说明.txt」描述卖点</div>
-</div>
-</div>
-
-<!-- 产品描述表单（含拍照） -->
-<div class="product-form" id="product-form" data-store-name="贵阳店" data-store-id="guiyang" data-store-brands="CNC, JOHN RICHMOND, RR/ORRDT, GUDUTTI(高级定制)">
-<h3>📷 拍照 / 选图 + 填写产品信息</h3>
-
-<!-- 图片选择 -->
-<div class="photo-upload-area" onclick="document.getElementById('prod-photos').click()">
-<input type="file" id="prod-photos" accept="image/*" multiple style="display:none">
-<label class="photo-upload-label">📷 拍照 / 相册上传</label>
-<div class="photo-upload-hint">支持 JPG/PNG/HEIC · 最多5张 · <span id="photo-count"></span></div>
+<!-- 图片选择 (修复iOS: label包裹方式) -->
+<div class="photo-upload-area" id="photo-area">
+  <label for="prod-photos" class="photo-upload-label">📷 拍照 / 相册上传</label>
+  <input type="file" id="prod-photos" accept="image/*" multiple class="photo-input-hidden">
+  <div class="photo-upload-hint">
+    支持 JPG/PNG/HEIC · 最多5张 · 点击上方按钮选择
+    <span id="photo-count"></span>
+  </div>
 </div>
 <div class="photo-previews" id="photo-previews"></div>
 
-<div class="form-row" style="margin-top:12px">
-<div>
-<label>产品名称 *</label>
-<input type="text" id="prod-name" placeholder="例：老佛爷2026夏季POLO衫-经典黑">
-</div>
-<div>
-<label>品牌 *</label>
-<select id="prod-brand">
-<option value="">请选择品牌</option>
+<!-- 精简表单：AI自动识别品牌/风格/卖点 -->
+<div class="product-form" id="product-form"
+     data-store-name="贵阳店"
+     data-store-id="guiyang"
+     data-store-brands="CNC, JOHN RICHMOND, RR/ORRDT, GUDUTTI(高级定制)"
+     data-worker-url="__WORKER_URL__"
+     data-store-city="贵阳">
+  <div class="form-row">
+    <div>
+      <label>产品名称（选填）</label>
+      <input type="text" id="prod-name" placeholder="例：老佛爷2026夏季POLO衫-经典黑">
+    </div>
+    <div>
+      <label>品牌</label>
+      <select id="prod-brand">
+        <option value="">AI 自动识别</option>
 <option value="CNC">CNC</option>
 <option value="JOHN RICHMOND">JOHN RICHMOND</option>
 <option value="RR/ORRDT">RR/ORRDT</option>
 <option value="GUDUTTI(高级定制)">GUDUTTI(高级定制)</option>
-</select>
+      </select>
+    </div>
+  </div>
+  <div>
+    <label>补充说明（选填，搭配建议/拍摄想法等）</label>
+    <textarea id="prod-notes" placeholder="例：下身搭浅蓝破坏水洗牛仔裤，银饰配件点缀... 留空则AI全自动识别" rows="2"></textarea>
+  </div>
+
+  <!-- 主操作按钮 -->
+  <div class="form-actions">
+    <button class="btn-generate" id="btn-generate">
+      <span class="btn-generate-icon">🤖</span>
+      <span class="btn-generate-text">AI 一键生成文案</span>
+    </button>
+  </div>
+
+  <!-- 状态区 -->
+  <div class="state-section hidden" id="state-uploading">
+    <div class="loading-spinner"></div>
+    <p class="state-text">🔄 正在处理图片...</p>
+  </div>
+  <div class="state-section hidden" id="state-analyzing">
+    <div class="loading-spinner"></div>
+    <p class="state-text">🤖 AI 正在分析商品...</p>
+    <p class="state-hint">品牌识别 · 风格分析 · 卖点提炼 · 3版文案生成</p>
+  </div>
+  <div class="state-section hidden" id="state-error">
+    <p class="error-msg">⚠️ <span id="error-text"></span></p>
+    <button class="btn-retry" id="btn-retry">🔄 重试</button>
+  </div>
+
+  <!-- AI 识别结果摘要 -->
+  <div class="analysis-summary hidden" id="analysis-summary"></div>
+
+  <!-- 文案结果 -->
+  <div class="results-section hidden" id="results-section">
+    <div class="results-header">
+      <h3>✍️ 生成结果</h3>
+      <button class="btn-copy-all" id="btn-copy-all">📋 一键复制全部</button>
+    </div>
+    <div id="copy-cards"></div>
+    <div class="results-actions">
+      <button class="btn-regenerate" id="btn-regenerate">🔄 重新生成</button>
+    </div>
+  </div>
+
+  <!-- 传统方式（折叠保留） -->
+  <details class="legacy-section">
+    <summary>📦 传统方式：下载说明文件</summary>
+    <div class="form-actions" style="margin-top:8px">
+      <button class="btn-secondary" id="btn-download-txt">📥 下载产品说明文件</button>
+      <button class="btn-copy" id="btn-copy-text">📋 复制文本</button>
+    </div>
+    <div id="preview-box" class="preview-box hidden"></div>
+  </details>
 </div>
-</div>
-<div class="form-row">
-<div>
-<label>吊牌价</label>
-<input type="text" id="prod-price" placeholder="例：¥1,680">
-</div>
-<div>
-<label>风格定位</label>
-<select id="prod-style">
-<option value="">请选择</option>
-<option value="轻奢休闲">轻奢休闲</option>
-<option value="商务精英">商务精英</option>
-<option value="潮流街头">潮流街头</option>
-<option value="运动休闲">运动休闲</option>
-<option value="正式商务">正式商务</option>
-<option value="日常通勤">日常通勤</option>
-</select>
-</div>
-</div>
-<div class="form-row">
-<div>
-<label>核心卖点 *</label>
-<textarea id="prod-features" placeholder="例：法国弹力珠地棉、200+透气孔、抗皱免烫、建筑感领口"></textarea>
-</div>
-<div>
-<label>目标客群</label>
-<textarea id="prod-target" placeholder="例：30-45岁精英男士，讲究品质不张扬"></textarea>
-</div>
-</div>
-<div>
-<label>补充说明（搭配建议、拍摄想法等）</label>
-<textarea id="prod-notes" placeholder="例：下身搭JOHN RICHMOND浅蓝破坏水洗牛仔裤，银饰配件点缀..."></textarea>
-</div>
-<div class="form-actions">
-<button class="btn-primary" id="btn-download-txt">📥 下载产品说明文件</button>
-<button class="btn-copy" id="btn-copy-text">📋 复制文本</button>
-<button class="btn-secondary" id="btn-preview">👁 预览</button>
-</div>
-<div id="preview-box" style="display:none;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:8px;font-size:.78em;white-space:pre-wrap;max-height:200px;overflow-y:auto;color:var(--muted)"></div>
-<div style="font-size:.72em;color:var(--muted);margin-top:8px">
-💡 <strong>操作提示</strong>：拍照/选图 → 填写信息 → 点击「下载文件」→ 将下载的 .txt 文件保存到「{folder_name} → 📥上传产品图」→ 系统30分钟内自动生成文案
-</div>
+
+<!-- iCloud 上传方式（保留作为备用） -->
+<div class="upload-methods">
+  <div class="upload-method">
+    <span class="method-icon">📱</span>
+    <div class="method-title">从相册直接上传</div>
+    <div class="method-desc">点击上方拍照/相册上传按钮，选择产品搭配图，AI自动识别并生成文案</div>
+  </div>
+  <div class="upload-method">
+    <span class="method-icon">☁️</span>
+    <div class="method-title">iCloud 云盘上传</div>
+    <div class="method-desc">打开「文件」App → iCloud云盘 → 男装门店素材共享 → 🏪贵阳店 → 📥上传产品图</div>
+  </div>
+  <div class="upload-method">
+    <span class="method-icon">💡</span>
+    <div class="method-title">拍照后分享</div>
+    <div class="method-desc">拍好搭配照 → 分享 → 存储到「文件」→ 选择上述 iCloud 文件夹</div>
+  </div>
 </div>
 </div>
 
 <!-- ===== 品牌调性 ===== -->
 <div class="card">
 <h2>🏷️ 代理品牌 · 文案调性</h2>
-<div style="margin-bottom:8px">{brand_tags}</div>
+<div style="margin-bottom:8px"><span class="brand-tag" title="意大利先锋设计师品牌，极简暗黑、解构主义">CNC</span>
+<span class="brand-tag" title="英国摇滚轻奢品牌，大胆前卫、街头与奢华碰撞">JOHN RICHMOND</span>
+<span class="brand-tag" title="新锐设计师品牌，创新面料与廓形">RR/ORRDT</span>
+<span class="brand-tag" title="一人一版、匠心手作，高级定制">GUDUTTI(高级定制)</span></div>
 <ul style="font-size:.83em;padding-left:16px;color:var(--muted)">
-{brand_tones_html}</ul>
+<li><strong>CNC</strong>：意大利先锋设计师品牌，极简暗黑、解构主义</li>
+<li><strong>JOHN RICHMOND</strong>：英国摇滚轻奢品牌，大胆前卫、街头与奢华碰撞</li>
+<li><strong>RR/ORRDT</strong>：新锐设计师品牌，创新面料与廓形</li>
+<li><strong>GUDUTTI(高级定制)</strong>：一人一版、匠心手作，高级定制</li>
+</ul>
 </div>
 
 <!-- ===== 智能体状态 ===== -->
@@ -135,41 +147,88 @@
 <h2>🤖 AI 智能体</h2>
 <div class="status-panel">
 <span class="status-dot ready" id="status-dot"></span>
-<span id="status-text">智能体就绪 — 上传产品图后30分钟内自动触发</span>
+<span id="status-text">智能体就绪 — 上传产品图点击「AI生成」即可实时获得文案</span>
 </div>
 <div style="font-size:.8em;color:var(--muted);margin-top:8px">
-✅ <strong>专属智能体</strong>：store-{sid}<br>
-📤 上传后 <strong>30分钟内</strong> 自动检测<br>
-✍️ 生成 <strong>3版文案</strong> + 拍摄脚本 + 标签 + 对标视频<br>
-🔍 所有文案先入<strong>审核队列</strong>，审核通过后发布
+✅ <strong>实时生成</strong>：上传图片 → 点击生成 → 10-20秒出结果<br>
+✍️ 生成 <strong>3版文案</strong>（品牌故事/场景痛点/情感共鸣）+ 标签<br>
+📋 支持<strong>一键复制</strong>，直接用于拍摄脚本<br>
+🔍 AI 自动识别品牌、风格、品类、色系、核心卖点
 </div>
 </div>
 
 <!-- ===== 本周选题 ===== -->
 <div class="card">
 <h2>🎯 本周选题</h2>
-{topics_html}
+
+<div class="topic-item">
+<div class="topic-num s">1</div>
+<div class="topic-info">
+<div class="topic-title">国际轻奢 × 本地生活 — 在地化内容突围 <span class="tag tag-s">S级</span></div>
+<div class="topic-desc">用贵阳地标场景衬托品牌质感</div>
+<div class="video-ref" style="color:var(--muted);font-size:.72em">📹 视频参考将在周报更新时自动添加</div>
+</div>
+</div>
+<div class="topic-item">
+<div class="topic-num s">2</div>
+<div class="topic-info">
+<div class="topic-title">品牌故事 — 为什么懂行的男人都选它 <span class="tag tag-s">S级</span></div>
+<div class="topic-desc">聚焦CNC, JOHN RICHMOND品牌故事</div>
+<div class="video-ref" style="color:var(--muted);font-size:.72em">📹 视频参考将在周报更新时自动添加</div>
+</div>
+</div>
+<div class="topic-item">
+<div class="topic-num a">3</div>
+<div class="topic-info">
+<div class="topic-title">夏季清凉面料 — 轻奢的质感底线 <span class="tag tag-a">A级</span></div>
+<div class="topic-desc">亚热带高原气候下的面料选择</div>
+<div class="video-ref" style="color:var(--muted);font-size:.72em">📹 视频参考将在周报更新时自动添加</div>
+</div>
+</div>
+<div class="topic-item">
+<div class="topic-num a">4</div>
+<div class="topic-info">
+<div class="topic-title">一件好衣服穿3年 vs 买5件穿一季 <span class="tag tag-a">A级</span></div>
+<div class="topic-desc">品质对比型内容，完播率高</div>
+<div class="video-ref" style="color:var(--muted);font-size:.72em">📹 视频参考将在周报更新时自动添加</div>
+</div>
+</div>
+<div class="topic-item">
+<div class="topic-num b">5</div>
+<div class="topic-info">
+<div class="topic-title">基础款穿出大牌感 — Cleanfit进阶版 <span class="tag tag-b">B级</span></div>
+<div class="topic-desc">低调有质感的穿搭公式</div>
+<div class="video-ref" style="color:var(--muted);font-size:.72em">📹 视频参考将在周报更新时自动添加</div>
+</div>
+</div>
 </div>
 
 <!-- ===== 推荐标签 ===== -->
 <div class="card">
 <h2>🏷️ 推荐发布标签</h2>
-<p style="margin-bottom:8px">{tags_html}</p>
+<p style="margin-bottom:8px">
+<span class="tag tag-s">#轻奢男装</span>
+<span class="tag tag-s">#高级感穿搭</span>
+<span class="tag tag-a">#仟徒男装</span>
+<span class="tag tag-a">#男士穿搭</span>
+<span class="tag tag-b">#品质男装</span>
+<span class="tag tag-platform">#贵阳同城</span>
+<span class="tag tag-platform">#贵阳男装</span></p>
 <p style="font-size:.72em;color:var(--muted)">📌 每条视频用5-8个标签，前三最重要。记得加同城标签获取本地流量</p>
 </div>
 
 <!-- ===== 本地化建议 ===== -->
 <div class="card">
-<h2>💡 {city}本地化建议</h2>
-<div class="local-tip"><span class="tip-icon">📍</span><span><strong>拍摄地标</strong>：{local_hotspots}</span></div>
-<div class="local-tip"><span class="tip-icon">🎯</span><span><strong>主推品类</strong>：{hot_categories}</span></div>
-<div class="local-tip"><span class="tip-icon">🌤</span><span><strong>天气借势</strong>：{local_weather}气候 — 夏季主打清凉透气、抗皱免烫</span></div>
-<div class="local-tip"><span class="tip-icon">🏷️</span><span><strong>同城标签</strong>：#{city}同城 #{city}穿搭 #{city}男装</span></div>
-<div class="local-tip"><span class="tip-icon">💬</span><span><strong>本地话题</strong>：用{city}本地生活场景拉近距离 — 咖啡店、商圈、地标街拍</span></div>
+<h2>💡 贵阳本地化建议</h2>
+<div class="local-tip"><span class="tip-icon">📍</span><span><strong>拍摄地标</strong>：花果园, 喷水池, 观山湖</span></div>
+<div class="local-tip"><span class="tip-icon">🎯</span><span><strong>主推品类</strong>：卫衣, 潮T, 工装裤, 外套, 个性配饰</span></div>
+<div class="local-tip"><span class="tip-icon">🌤</span><span><strong>天气借势</strong>：亚热带高原气候 — 夏季主打清凉透气、抗皱免烫</span></div>
+<div class="local-tip"><span class="tip-icon">🏷️</span><span><strong>同城标签</strong>：#贵阳同城 #贵阳穿搭 #贵阳男装</span></div>
+<div class="local-tip"><span class="tip-icon">💬</span><span><strong>本地话题</strong>：用贵阳本地生活场景拉近距离 — 咖啡店、商圈、地标街拍</span></div>
 </div>
 
 <div class="footer">
-🏪 {name} · 📍 {location_str} · 仟徒男装 · 智能体 store-{sid}<br>
+🏪 贵阳店 · 📍 贵阳 · 南明区 · 仟徒男装<br>
 <a href="../index.html" style="color:var(--blue)">← 返回9店总览</a> ·
 <a href="#upload-zone" style="color:var(--green)">📸 上传产品图</a>
 </div>
