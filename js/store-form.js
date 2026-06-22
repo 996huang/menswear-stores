@@ -542,6 +542,46 @@
     }, 3000);
   }
 
+  // ===== 选题「一键生成口播文案」按钮 =====
+  function initTopicGenButtons() {
+    document.querySelectorAll('.btn-topic-gen').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var topic = this.dataset.topic || '';
+        var angle = this.dataset.angle || '';
+        var ctype = this.dataset.ctype || '';
+
+        // 滚动到上传区域
+        var uploadZone = document.getElementById('upload-zone');
+        if (uploadZone) {
+          uploadZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 预填补充说明为选题角度
+        var notesEl = document.getElementById('prod-notes');
+        if (notesEl) {
+          var hint = '选题：' + topic + '\n类型：' + ctype + '\n参考角度：' + angle;
+          if (notesEl.value && notesEl.value.trim()) {
+            notesEl.value = notesEl.value.trim() + '\n\n' + hint;
+          } else {
+            notesEl.value = hint;
+          }
+        }
+
+        // 提示用户上传图片
+        showToast('📸 请上传产品搭配图（可选），然后点击「AI生成」');
+
+        // 延迟聚焦图片上传
+        setTimeout(function() {
+          var photoLabel = document.querySelector('.photo-upload-label');
+          if (photoLabel) {
+            photoLabel.style.animation = 'pulse 0.6s ease 3';
+            setTimeout(function() { photoLabel.style.animation = ''; }, 1800);
+          }
+        }, 500);
+      });
+    });
+  }
+
   // ===== 初始化 =====
   function init() {
     cacheElements();
@@ -553,6 +593,7 @@
     initCopyAll();
     initRegenerate();
     initLegacyFeatures();
+    initTopicGenButtons();
 
     // 初始状态
     setPhase('idle');
