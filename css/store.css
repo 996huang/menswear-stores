@@ -402,6 +402,151 @@ body {
 .footer a { color: var(--blue); text-decoration: none; }
 .footer a:hover { text-decoration: underline; }
 
+/* ===== 图片上传区域 ===== */
+.photo-upload-area {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  margin: 12px 0;
+  background: rgba(88,166,255,.03);
+  transition: border-color .2s;
+  cursor: pointer;
+}
+.photo-upload-area:hover,
+.photo-upload-area:focus-within {
+  border-color: var(--blue);
+}
+.photo-upload-area input[type="file"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.photo-upload-label {
+  display: inline-block;
+  padding: 10px 20px;
+  background: var(--blue);
+  color: #000;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: .85em;
+  cursor: pointer;
+}
+.photo-upload-hint {
+  font-size: .72em;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* 图片预览缩略图 */
+.photo-previews {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.photo-thumb {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.photo-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-thumb .photo-remove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(248,81,73,.9);
+  color: #fff;
+  border: none;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+.photo-thumb .photo-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,.7);
+  color: #fff;
+  font-size: .55em;
+  padding: 1px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== 一键配置步骤 ===== */
+.setup-steps {
+  counter-reset: step;
+  list-style: none;
+  padding: 0;
+}
+.setup-steps li {
+  counter-increment: step;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: .8em;
+}
+.setup-steps li::before {
+  content: counter(step);
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: .8em;
+}
+.setup-steps li .step-text {
+  flex: 1;
+  color: var(--text);
+  line-height: 1.5;
+}
+.setup-steps li .step-text strong {
+  color: #f0f6fc;
+}
+
+/* ===== 上传方法卡片改进 ===== */
+.upload-method.featured {
+  border-color: var(--green);
+  position: relative;
+}
+.upload-method.featured::after {
+  content: '推荐';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--green);
+  color: #000;
+  font-size: .6em;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+
 /* ===== 响应式微调 ===== */
 @media (max-width: 480px) {
   body { padding: 8px; }
