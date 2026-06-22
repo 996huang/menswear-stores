@@ -576,19 +576,21 @@
     }, 3000);
   }
 
-  // ===== 复制视频链接按钮 =====
-  function initCopyLinkButtons() {
-    document.querySelectorAll('.btn-copy-link').forEach(function(btn) {
+  // ===== 视频口令复制按钮 =====
+  function initCopyCodeButtons() {
+    document.querySelectorAll('.btn-copy-code').forEach(function(btn) {
       btn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        var url = this.dataset.url || '';
         var platform = this.dataset.platform || '';
+        var search = this.dataset.search || '';
+        var url = this.dataset.url || '';
         var platformNames = { 'douyin': '抖音', 'xhs': '小红书', 'smzdm': '什么值得买' };
         var platformName = platformNames[platform] || 'App';
-        if (url) {
-          copyToClipboard(url, '✅ 链接已复制，请打开' + platformName + 'App搜索');
-        }
+
+        // 复制搜索关键词文本（比URL更适合在App内搜索）
+        var copyText = '「' + search + '」——打开' + platformName + '搜索\n链接：' + url;
+        copyToClipboard(copyText, '✅ 已复制口令，请打开' + platformName + 'App搜索「' + search + '」');
       });
     });
   }
@@ -603,42 +605,361 @@
     }
   }
 
-  // ===== 选题「一键生成口播文案」按钮 =====
-  function initTopicGenButtons() {
-    document.querySelectorAll('.btn-topic-gen').forEach(function(btn) {
+  // ===== 获取选题数据 =====
+  function getTopicData(topicIdx) {
+    var card = document.querySelector('.topic-card[data-topic-data]');
+    // Find the specific card by index
+    var cards = document.querySelectorAll('.topic-card');
+    var targetCard = null;
+    cards.forEach(function(card) {
+      var data = card.getAttribute('data-topic-data');
+      if (data) {
+        try {
+          var parsed = JSON.parse(data.replace(/&#39;/g, "'"));
+          if (parsed.idx === topicIdx) {
+            targetCard = card;
+          }
+        } catch(e) {}
+      }
+    });
+    if (!targetCard) return null;
+    try {
+      return JSON.parse(targetCard.getAttribute('data-topic-data').replace(/&#39;/g, "'"));
+    } catch(e) {
+      return null;
+    }
+  }
+
+  // ===== 选题双模式生成 =====
+  async function handleTopicGenerate(topicIdx, mode) {
+    var topicData = getTopicData(topicIdx);
+    if (!topicData) {
+      showToast('⚠️ 选题数据加载失败');
+      return;
+    }
+
+    var loadingEl = document.getElementById('topic-loading-' + topicIdx);
+    var errorEl = document.getElementById('topic-error-' + topicIdx);
+    var contentEl = document.getElementById('topic-content-' + topicIdx);
+    var resultEl = document.getElementById('topic-result-' + topicIdx);
+
+    // Show loading
+    if (resultEl) resultEl.classList.remove('hidden');
+    if (loadingEl) loadingEl.classList.remove('hidden');
+    if (errorEl) errorEl.classList.add('hidden');
+    if (contentEl) contentEl.innerHTML = '';
+    if (resultEl) resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    var workerUrl = els.form ? els.form.dataset.workerUrl : '';
+    if (window.location.protocol === 'https:' && workerUrl && workerUrl.startsWith('http:')) {
+      showToast('⚠️ 请在Safari中打开本地地址');
+      if (loadingEl) loadingEl.classList.add('hidden');
+      return;
+    }
+    if (window.location.protocol === 'http:') {
+      workerUrl = window.location.origin;
+    }
+
+    var storeId = els.form ? els.form.dataset.storeId : '';
+    var storeName = els.form ? els.form.dataset.storeName : '';
+    var storeBrands = els.form ? els.form.dataset.storeBrands : '';
+    var city = els.form ? els.form.dataset.storeCity : '';
+
+    // For product_topic mode, need product images
+    var images = [];
+    if (mode === 'product_topic') {
+      // Use currently selected images from the product zone
+      if (state.selectedImages.length === 0) {
+        showToast('⚠️ 请先在「区块一」上传产品搭配图');
+        if (loadingEl) loadingEl.classList.add('hidden');
+        return;
+      }
+      // Compress images
+      for (var i = 0; i < state.selectedImages.length; i++) {
+        var compressed = await compressImage(state.selectedImages[i].dataUrl, 1024, 0.8);
+        images.push(compressed);
+      }
+    }
+
+    var body = {
+      images: images,
+      storeId: storeId,
+      storeName: storeName,
+      brands: storeBrands,
+      productInfo: {
+        name: getVal('prod-name'),
+        brand: getVal('prod-brand'),
+        notes: getVal('prod-notes')
+      },
+      mode: mode,
+      topicContext: {
+        title: topicData.title,
+        ctype: topicData.ctype,
+        angle: topicData.angle,
+        framework: topicData.framework
+      }
+    };
+
+    var controller = new AbortController();
+    var timeout = setTimeout(function() { controller.abort(); }, 60000);
+
+    try {
+      var response = await fetch(workerUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: controller.signal
+      });
+      clearTimeout(timeout);
+
+      if (!response.ok) {
+        var errData;
+        try { errData = await response.json(); } catch(e) { errData = {error: 'HTTP ' + response.status}; }
+        throw new Error(errData.error || '请求失败');
+      }
+
+      var data = await response.json();
+      if (loadingEl) loadingEl.classList.add('hidden');
+      renderTopicResult(topicIdx, data, mode);
+    } catch(e) {
+      clearTimeout(timeout);
+      if (loadingEl) loadingEl.classList.add('hidden');
+      if (e.name === 'AbortError') {
+        showTopicError(topicIdx, '请求超时，请重试');
+      } else {
+        showTopicError(topicIdx, e.message || '生成失败');
+      }
+    }
+  }
+
+  function showTopicError(topicIdx, msg) {
+    var errorEl = document.getElementById('topic-error-' + topicIdx);
+    if (errorEl) {
+      errorEl.classList.remove('hidden');
+      var msgEl = errorEl.querySelector('.error-msg');
+      if (msgEl) msgEl.textContent = '⚠️ ' + msg;
+    }
+  }
+
+  // ===== 渲染选题结果 =====
+  function renderTopicResult(topicIdx, data, mode) {
+    var contentEl = document.getElementById('topic-content-' + topicIdx);
+    if (!contentEl) return;
+
+    var html = '';
+
+    if (data.analysis && mode === 'product_topic') {
+      // Show product analysis summary
+      var a = data.analysis;
+      var analysisItems = [];
+      if (a.brand_recognition && a.brand_recognition !== '未识别') analysisItems.push({l:'🏷️',v:a.brand_recognition});
+      if (a.style_category) analysisItems.push({l:'👔',v:a.style_category});
+      if (a.fit_silhouette) analysisItems.push({l:'📐',v:a.fit_silhouette});
+      var cp = a.color_palette;
+      if (cp && cp.primary) analysisItems.push({l:'🎨',v:cp.primary + (cp.secondary ? '+' + cp.secondary : '')});
+      html += '<div class="topic-analysis">';
+      analysisItems.forEach(function(item) {
+        html += '<span class="analysis-tag"><strong>' + item.l + '</strong> ' + item.v + '</span>';
+      });
+      html += '</div>';
+    }
+
+    // Render copies
+    if (data.copies && data.copies.length) {
+      data.copies.forEach(function(copy, ci) {
+        var tagsHtml = '';
+        if (copy.tags && copy.tags.length) {
+          tagsHtml = copy.tags.map(function(t) { return '<span class="tag tag-s">' + t + '</span>'; }).join(' ');
+        }
+
+        // Framework labels for oral rewrite mode
+        var frameworkHtml = '';
+        if (copy.framework_labels) {
+          frameworkHtml = '<div class="copy-framework">';
+          for (var key in copy.framework_labels) {
+            frameworkHtml += '<span class="fw-label">' + copy.framework_labels[key] + '</span> ';
+          }
+          frameworkHtml += '</div>';
+        }
+
+        var hookHtml = '';
+        if (copy.hook) {
+          hookHtml = '<div class="copy-hook">🎬 开头：' + copy.hook + '</div>';
+        }
+
+        var shootingHtml = '';
+        if (copy.shooting_tip) {
+          shootingHtml = '<div class="copy-shooting-tip">🎥 ' + copy.shooting_tip + '</div>';
+        }
+
+        var canRewrite = copy.can_rewrite;
+        var rewriteHtml = '';
+        if (canRewrite) {
+          rewriteHtml = '<button class="btn-rewrite" data-topic-idx="' + topicIdx + '" data-copy-idx="' + ci + '">🔄 换风格仿写</button>';
+        }
+
+        html += '<div class="copy-card topic-copy-card">' +
+          '<div class="copy-card-header">' +
+          '<span class="copy-type-badge copy-type-' + ci + '">' + (copy.type || '') + '</span>' +
+          '<div>' +
+          (canRewrite ? rewriteHtml : '') +
+          '<button class="copy-btn-icon" data-copy="' + ci + '" title="复制">📋</button>' +
+          '</div>' +
+          '</div>' +
+          '<h4 class="copy-title">' + (copy.title || '') + '</h4>' +
+          hookHtml +
+          (frameworkHtml || '') +
+          '<div class="copy-body">' + (copy.body || '') + '</div>' +
+          shootingHtml +
+          '<div class="copy-tags">' + tagsHtml + '</div>' +
+          '</div>';
+      });
+    }
+
+    contentEl.innerHTML = html;
+
+    // Bind copy buttons in topic results
+    contentEl.querySelectorAll('.copy-btn-icon').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        var topic = this.dataset.topic || '';
-        var angle = this.dataset.angle || '';
-        var ctype = this.dataset.ctype || '';
+        var ci = parseInt(this.dataset.copy);
+        var copies = data.copies;
+        if (!copies || !copies[ci]) return;
+        var copy = copies[ci];
+        var text = (copy.title || '') + '\n\n' +
+          (copy.hook ? '🎬 开头：' + copy.hook + '\n\n' : '') +
+          (copy.body || '') + '\n\n' +
+          (copy.tags ? copy.tags.join(' ') : '');
+        copyToClipboard(text, '✅ 已复制「' + (copy.type || '文案') + '」');
+      });
+    });
 
-        // 滚动到上传区域
-        var uploadZone = document.getElementById('upload-zone');
-        if (uploadZone) {
-          uploadZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Bind rewrite buttons
+    contentEl.querySelectorAll('.btn-rewrite').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var tIdx = parseInt(this.dataset.topicIdx);
+        handleTopicRewrite(tIdx);
+      });
+    });
+  }
+
+  // ===== 仿写（换个风格）=====
+  async function handleTopicRewrite(topicIdx) {
+    var topicData = getTopicData(topicIdx);
+    if (!topicData) return;
+
+    var loadingEl = document.getElementById('topic-loading-' + topicIdx);
+    var contentEl = document.getElementById('topic-content-' + topicIdx);
+
+    if (loadingEl) loadingEl.classList.remove('hidden');
+    if (contentEl) contentEl.style.opacity = '0.5';
+
+    var workerUrl = els.form ? els.form.dataset.workerUrl : '';
+    if (window.location.protocol === 'http:') {
+      workerUrl = window.location.origin;
+    }
+
+    var body = {
+      images: [],
+      storeId: els.form ? els.form.dataset.storeId : '',
+      storeName: els.form ? els.form.dataset.storeName : '',
+      brands: els.form ? els.form.dataset.storeBrands : '',
+      productInfo: {},
+      mode: 'oral_rewrite',
+      topicContext: {
+        title: topicData.title,
+        ctype: topicData.ctype,
+        angle: topicData.angle,
+        framework: topicData.framework
+      },
+      styleVariant: '换个视角重写：保留相同的框架结构（开头→观点→论述→案例→金句→CTA），但用不同的生活场景、不同的案例、不同的金句表达。'
+    };
+
+    var controller = new AbortController();
+    var timeout = setTimeout(function() { controller.abort(); }, 60000);
+
+    try {
+      var response = await fetch(workerUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: controller.signal
+      });
+      clearTimeout(timeout);
+
+      if (!response.ok) throw new Error('请求失败');
+
+      var data = await response.json();
+      if (loadingEl) loadingEl.classList.add('hidden');
+      if (contentEl) contentEl.style.opacity = '1';
+      renderTopicResult(topicIdx, data, 'oral_rewrite');
+      showToast('✅ 新风格文案已生成');
+    } catch(e) {
+      clearTimeout(timeout);
+      if (loadingEl) loadingEl.classList.add('hidden');
+      if (contentEl) contentEl.style.opacity = '1';
+      showToast('⚠️ 仿写失败：' + (e.message || '请重试'));
+    }
+  }
+
+  // ===== 产品+选题 按钮 =====
+  function initTopicProductButtons() {
+    document.querySelectorAll('.btn-topic-product').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var topicIdx = parseInt(this.dataset.topicIdx);
+        if (isNaN(topicIdx)) return;
+
+        // Check if product images are uploaded
+        if (state.selectedImages.length === 0) {
+          // Scroll to product upload zone
+          var uploadZone = document.getElementById('upload-zone');
+          if (uploadZone) {
+            uploadZone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          showToast('📸 请先在「区块一」上传产品搭配图');
+          // Pulse the photo upload label
+          setTimeout(function() {
+            var photoLabel = document.querySelector('.photo-upload-label');
+            if (photoLabel) {
+              photoLabel.style.animation = 'pulse 0.6s ease 3';
+              setTimeout(function() { photoLabel.style.animation = ''; }, 1800);
+            }
+          }, 500);
+          return;
         }
 
-        // 预填补充说明为选题角度
-        var notesEl = document.getElementById('prod-notes');
-        if (notesEl) {
-          var hint = '选题：' + topic + '\n类型：' + ctype + '\n参考角度：' + angle;
-          if (notesEl.value && notesEl.value.trim()) {
-            notesEl.value = notesEl.value.trim() + '\n\n' + hint;
-          } else {
-            notesEl.value = hint;
-          }
+        handleTopicGenerate(topicIdx, 'product_topic');
+      });
+    });
+  }
+
+  // ===== 纯口播仿写 按钮 =====
+  function initTopicOralButtons() {
+    document.querySelectorAll('.btn-topic-oral').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var topicIdx = parseInt(this.dataset.topicIdx);
+        if (isNaN(topicIdx)) return;
+        handleTopicGenerate(topicIdx, 'oral_rewrite');
+      });
+    });
+  }
+
+  // ===== 选题重试按钮 =====
+  function initTopicRetryButtons() {
+    document.querySelectorAll('.btn-retry-topic').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var topicIdx = parseInt(this.dataset.topicIdx);
+        if (isNaN(topicIdx)) return;
+
+        var topicData = getTopicData(topicIdx);
+        if (!topicData) return;
+
+        // Try to determine which mode was last used
+        var contentEl = document.getElementById('topic-content-' + topicIdx);
+        var mode = 'oral_rewrite'; // default
+        if (contentEl && contentEl.querySelector('.topic-analysis')) {
+          mode = 'product_topic';
         }
-
-        // 提示用户上传图片
-        showToast('📸 请上传产品搭配图（可选），然后点击「AI生成」');
-
-        // 延迟聚焦图片上传
-        setTimeout(function() {
-          var photoLabel = document.querySelector('.photo-upload-label');
-          if (photoLabel) {
-            photoLabel.style.animation = 'pulse 0.6s ease 3';
-            setTimeout(function() { photoLabel.style.animation = ''; }, 1800);
-          }
-        }, 500);
+        handleTopicGenerate(topicIdx, mode);
       });
     });
   }
@@ -654,8 +975,10 @@
     initCopyAll();
     initRegenerate();
     initLegacyFeatures();
-    initTopicGenButtons();
-    initCopyLinkButtons();
+    initTopicProductButtons();
+    initTopicOralButtons();
+    initTopicRetryButtons();
+    initCopyCodeButtons();
     initWechatDetection();
 
     // 初始状态
