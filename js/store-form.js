@@ -277,7 +277,7 @@
     return el ? el.value.trim() : '';
   }
 
-  // ===== 渲染分析结果 =====
+  // ===== 渲染分析结果（v3增强版） =====
   function renderAnalysis(analysis) {
     if (!els.analysisSummary) return;
 
@@ -291,11 +291,39 @@
     if (analysis.product_category) {
       items.push({ label: '📦 品类', value: analysis.product_category });
     }
-    if (analysis.color_scheme) {
+    if (analysis.fit_silhouette) {
+      items.push({ label: '📐 版型', value: analysis.fit_silhouette + (analysis.fit_detail ? ' · ' + analysis.fit_detail : '') });
+    }
+    // 颜色色板
+    var cp = analysis.color_palette;
+    if (cp && cp.primary) {
+      var colorText = cp.primary;
+      if (cp.secondary) colorText += ' + ' + cp.secondary;
+      if (cp.accent) colorText += ' · ' + cp.accent + '点缀';
+      if (cp.temperature) colorText += ' (' + cp.temperature + ')';
+      items.push({ label: '🎨 配色', value: colorText });
+    } else if (analysis.color_scheme) {
       items.push({ label: '🎨 配色', value: analysis.color_scheme });
     }
-    if (analysis.fabric_texture) {
+    // 面料详情
+    var fab = analysis.fabric;
+    if (fab && fab.composition) {
+      var fabText = fab.composition;
+      if (fab.weight) fabText += ' · ' + fab.weight;
+      if (fab.texture) fabText += ' · ' + fab.texture;
+      if (fab.sheen) fabText += ' · ' + fab.sheen;
+      items.push({ label: '🧵 面料', value: fabText });
+    } else if (analysis.fabric_texture) {
       items.push({ label: '🧵 面料', value: analysis.fabric_texture });
+    }
+    if (analysis.pattern && analysis.pattern !== '纯色') {
+      items.push({ label: '🔲 图案', value: analysis.pattern });
+    }
+    if (analysis.neckline) {
+      items.push({ label: '👔 领型', value: analysis.neckline });
+    }
+    if (analysis.occasion) {
+      items.push({ label: '📍 场景', value: analysis.occasion });
     }
 
     var html = '<div style="font-size:.78em;color:var(--muted);margin-bottom:4px">🔍 AI 识别结果</div><div class="analysis-tags">';
@@ -329,6 +357,11 @@
         hookHtml = '<div class="copy-hook">🎬 开头话术：' + copy.hook + '</div>';
       }
 
+      var shootingHtml = '';
+      if (copy.shooting_tip) {
+        shootingHtml = '<div class="copy-shooting-tip">🎥 拍摄建议：' + copy.shooting_tip + '</div>';
+      }
+
       html += '<div class="copy-card">' +
         '<div class="copy-card-header">' +
         '<span class="copy-type-badge ' + (typeColors[i] || '') + '">' + copy.type + '</span>' +
@@ -337,6 +370,7 @@
         '<h4 class="copy-title">' + (copy.title || '') + '</h4>' +
         hookHtml +
         '<div class="copy-body">' + (copy.body || '') + '</div>' +
+        shootingHtml +
         '<div class="copy-tags">' + tagsHtml + '</div>' +
         '</div>';
     });
@@ -542,6 +576,33 @@
     }, 3000);
   }
 
+  // ===== 复制视频链接按钮 =====
+  function initCopyLinkButtons() {
+    document.querySelectorAll('.btn-copy-link').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var url = this.dataset.url || '';
+        var platform = this.dataset.platform || '';
+        var platformNames = { 'douyin': '抖音', 'xhs': '小红书', 'smzdm': '什么值得买' };
+        var platformName = platformNames[platform] || 'App';
+        if (url) {
+          copyToClipboard(url, '✅ 链接已复制，请打开' + platformName + 'App搜索');
+        }
+      });
+    });
+  }
+
+  // ===== 微信环境检测 =====
+  function initWechatDetection() {
+    var ua = navigator.userAgent || '';
+    var isWechat = /MicroMessenger/i.test(ua);
+    var notice = document.getElementById('wechat-notice');
+    if (notice && isWechat) {
+      notice.classList.remove('hidden');
+    }
+  }
+
   // ===== 选题「一键生成口播文案」按钮 =====
   function initTopicGenButtons() {
     document.querySelectorAll('.btn-topic-gen').forEach(function(btn) {
@@ -594,6 +655,8 @@
     initRegenerate();
     initLegacyFeatures();
     initTopicGenButtons();
+    initCopyLinkButtons();
+    initWechatDetection();
 
     // 初始状态
     setPhase('idle');
