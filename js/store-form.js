@@ -190,11 +190,27 @@
     }
   }
 
-  // ===== 调用 Worker API =====
+  // ===== 调用 API（自动适配本地/远程） =====
   async function callWorkerAPI() {
     var workerUrl = els.form ? els.form.dataset.workerUrl : '';
+
+    // 如果当前页面是 HTTPS (GitHub Pages)，但 API 是 HTTP，会被浏览器拦截
+    // 提示用户打开本地地址
+    if (window.location.protocol === 'https:' && workerUrl && workerUrl.startsWith('http:')) {
+      var localPath = window.location.pathname;
+      throw new Error(
+        '请在手机浏览器打开本地地址：\\n' + workerUrl + localPath + '\\n\\n' +
+        '（确保手机和电脑连接同一WiFi）'
+      );
+    }
+
+    // 本地 HTTP 服务器上运行时，使用同源地址
+    if (window.location.protocol === 'http:') {
+      workerUrl = window.location.origin;
+    }
+
     if (!workerUrl || workerUrl === '__WORKER_URL__') {
-      throw new Error('AI 服务未配置，请先部署 Cloudflare Worker 并在 config/worker.json 中设置 URL');
+      throw new Error('AI 服务未配置，请先部署 API 服务器');
     }
 
     var storeId = els.form ? els.form.dataset.storeId : '';
