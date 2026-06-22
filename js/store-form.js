@@ -57,7 +57,7 @@
     }
 
     if (!selectedImages.length) {
-      container.innerHTML = '<div style="color:var(--muted);font-size:.72em;text-align:center;padding:8px">📷 点击上方按钮拍照或从相册选择产品搭配图（最多5张）</div>';
+      container.innerHTML = '<div style="color:var(--muted);font-size:.72em;text-align:center;padding:8px">📷 点击上方按钮，可选择「拍照」或「照片图库」（最多5张）</div>';
       return;
     }
 
