@@ -477,6 +477,38 @@ body {
 .video-link.plat-xhs { background: rgba(254,44,85,.15); color: #fe2c55; }
 .video-link.plat-smzdm { background: rgba(212,167,116,.15); color: var(--gold); }
 .video-link:hover { opacity: .8; }
+.video-link-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.btn-copy-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; height: 24px;
+  padding: 0;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 4px;
+  color: var(--muted);
+  font-size: .6em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-copy-link:active { background: rgba(255,255,255,.15); }
+
+/* 微信环境提示 */
+.wechat-notice {
+  background: rgba(255,193,7,.1);
+  border: 1px solid rgba(255,193,7,.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: .72em;
+  color: #ffc107;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
 
 /* 一键生成按钮 */
 .topic-card-action { margin-top: 10px; }
@@ -885,6 +917,15 @@ body {
   padding: 4px 8px;
   background: rgba(210,153,29,.06);
   border-left: 3px solid var(--orange);
+  border-radius: 0 4px 4px 0;
+}
+.copy-shooting-tip {
+  font-size: .75em;
+  color: var(--blue);
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  background: rgba(88,166,255,.06);
+  border-left: 3px solid var(--blue);
   border-radius: 0 4px 4px 0;
 }
 .copy-body {
