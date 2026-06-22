@@ -547,10 +547,280 @@ body {
   border-radius: 8px;
 }
 
+/* ===== iOS 照片输入修复 ===== */
+.photo-input-hidden {
+  position: absolute;
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+  overflow: hidden;
+}
+
+/* ===== 通用隐藏 ===== */
+.hidden { display: none !important; }
+
+/* ===== AI 生成按钮 ===== */
+.btn-generate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--green), #2ea043);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity .2s, transform .1s;
+  box-shadow: 0 2px 8px rgba(63,185,80,.3);
+}
+.btn-generate:active {
+  transform: scale(.98);
+}
+.btn-generate:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+.btn-generate-icon {
+  font-size: 1.3em;
+}
+
+/* ===== 加载旋转器 ===== */
+.loading-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--border);
+  border-top: 3px solid var(--blue);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== 状态区 ===== */
+.state-section {
+  text-align: center;
+  padding: 20px 12px;
+  margin: 12px 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.state-text {
+  color: #f0f6fc;
+  font-size: .9em;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.state-hint {
+  color: var(--muted);
+  font-size: .72em;
+}
+
+/* 错误状态 */
+.error-msg {
+  color: var(--red);
+  font-size: .85em;
+  margin-bottom: 8px;
+}
+.btn-retry {
+  padding: 8px 20px;
+  background: var(--card);
+  border: 1px solid var(--red);
+  color: var(--red);
+  border-radius: 8px;
+  font-size: .85em;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ===== AI 识别摘要 ===== */
+.analysis-summary {
+  margin: 12px 0;
+  padding: 10px 12px;
+  background: rgba(88,166,255,.06);
+  border: 1px solid rgba(88,166,255,.15);
+  border-radius: 8px;
+}
+.analysis-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.analysis-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: .73em;
+  background: rgba(88,166,255,.08);
+  border: 1px solid rgba(88,166,255,.15);
+  color: var(--blue);
+  white-space: nowrap;
+}
+.analysis-tag strong {
+  color: #79c0ff;
+}
+.analysis-tag-sell {
+  background: rgba(63,185,80,.08);
+  border-color: rgba(63,185,80,.2);
+  color: var(--green);
+}
+
+/* ===== 结果区 ===== */
+.results-section {
+  margin: 16px 0;
+}
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.results-header h3 {
+  margin: 0;
+  color: #f0f6fc;
+  font-size: .95em;
+}
+.btn-copy-all {
+  padding: 6px 14px;
+  background: rgba(88,166,255,.12);
+  border: 1px solid rgba(88,166,255,.25);
+  color: var(--blue);
+  border-radius: 8px;
+  font-size: .78em;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ===== 文案卡片 ===== */
+.copy-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  margin: 10px 0;
+  transition: border-color .2s;
+}
+.copy-card:hover {
+  border-color: rgba(88,166,255,.3);
+}
+.copy-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.copy-type-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: .72em;
+  font-weight: 700;
+}
+.copy-type-0 { background: rgba(163,113,247,.15); color: var(--purple); } /* 品牌故事型 */
+.copy-type-1 { background: rgba(210,153,29,.15); color: var(--orange); }  /* 场景痛点型 */
+.copy-type-2 { background: rgba(247,120,186,.15); color: var(--pink); }   /* 情感共鸣型 */
+.copy-title {
+  font-size: .95em;
+  color: #f0f6fc;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.copy-hook {
+  font-size: .78em;
+  color: var(--orange);
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  background: rgba(210,153,29,.06);
+  border-left: 3px solid var(--orange);
+  border-radius: 0 4px 4px 0;
+}
+.copy-body {
+  font-size: .85em;
+  color: var(--text);
+  line-height: 1.8;
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+.copy-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.copy-btn-icon {
+  padding: 6px 12px;
+  background: rgba(88,166,255,.1);
+  border: 1px solid rgba(88,166,255,.2);
+  border-radius: 6px;
+  color: var(--blue);
+  font-size: .75em;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.copy-btn-icon:active {
+  background: rgba(88,166,255,.2);
+}
+
+/* ===== 结果操作区 ===== */
+.results-actions {
+  text-align: center;
+  margin-top: 12px;
+}
+.btn-regenerate {
+  padding: 8px 24px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 8px;
+  font-size: .82em;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ===== 传统方式折叠区 ===== */
+.legacy-section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+}
+.legacy-section summary {
+  font-size: .78em;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px 0;
+}
+.legacy-section summary:hover {
+  color: var(--text);
+}
+.preview-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 8px;
+  font-size: .78em;
+  white-space: pre-wrap;
+  max-height: 200px;
+  overflow-y: auto;
+  color: var(--muted);
+}
+
 /* ===== 响应式微调 ===== */
 @media (max-width: 480px) {
   body { padding: 8px; }
   .card { padding: 12px; }
   .upload-zone { padding: 14px; }
   .form-actions button { font-size: .78em; padding: 8px 10px; }
+  .btn-generate { padding: 12px 18px; font-size: .92em; }
+  .copy-card { padding: 12px; }
+  .copy-type-badge { font-size: .68em; }
+  .analysis-tags { gap: 4px; }
+  .analysis-tag { font-size: .68em; padding: 2px 8px; }
 }
