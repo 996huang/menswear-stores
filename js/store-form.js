@@ -840,6 +840,9 @@
         handleTopicRewrite(tIdx);
       });
     });
+
+    // Show publish area after basic content is generated
+    showPublishArea(topicIdx);
   }
 
   // ===== 仿写（换个风格）=====
@@ -964,6 +967,194 @@
     });
   }
 
+  // ===== 发布文案生成 =====
+  function showPublishArea(topicIdx) {
+    var area = document.getElementById('topic-publish-area-' + topicIdx);
+    if (area) area.classList.remove('hidden');
+  }
+
+  function getTopicResultText(topicIdx) {
+    // Collect all text from the generated topic content for the publish_copy API
+    var contentEl = document.getElementById('topic-content-' + topicIdx);
+    if (!contentEl) return '';
+    var texts = [];
+    contentEl.querySelectorAll('.copy-title, .copy-hook, .copy-body').forEach(function(el) {
+      texts.push(el.textContent.trim());
+    });
+    return texts.join('\n\n');
+  }
+
+  async function handlePublishCopy(topicIdx) {
+    var topicData = getTopicData(topicIdx);
+    if (!topicData) return;
+
+    var baseText = getTopicResultText(topicIdx);
+    if (!baseText) {
+      showToast('⚠️ 请先生成基础文案（产品+选题 或 纯口播仿写）');
+      return;
+    }
+
+    var loadingEl = document.getElementById('topic-publish-loading-' + topicIdx);
+    var errorEl = document.getElementById('topic-publish-error-' + topicIdx);
+    var contentEl = document.getElementById('topic-publish-content-' + topicIdx);
+    var resultEl = document.getElementById('topic-publish-result-' + topicIdx);
+
+    if (resultEl) resultEl.classList.remove('hidden');
+    if (loadingEl) loadingEl.classList.remove('hidden');
+    if (errorEl) errorEl.classList.add('hidden');
+    if (contentEl) contentEl.innerHTML = '';
+    if (resultEl) resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    var workerUrl = els.form ? els.form.dataset.workerUrl : '';
+    if (window.location.protocol === 'http:') {
+      workerUrl = window.location.origin;
+    }
+
+    var body = {
+      images: [],
+      storeId: els.form ? els.form.dataset.storeId : '',
+      storeName: els.form ? els.form.dataset.storeName : '',
+      brands: els.form ? els.form.dataset.storeBrands : '',
+      productInfo: { notes: baseText },
+      mode: 'publish_copy',
+      topicContext: {
+        title: topicData.title,
+        ctype: topicData.ctype,
+        angle: topicData.angle,
+        framework: topicData.framework
+      }
+    };
+
+    var controller = new AbortController();
+    var timeout = setTimeout(function() { controller.abort(); }, 90000);
+
+    try {
+      var response = await fetch(workerUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: controller.signal
+      });
+      clearTimeout(timeout);
+
+      if (!response.ok) throw new Error('请求失败');
+      var data = await response.json();
+      if (loadingEl) loadingEl.classList.add('hidden');
+      renderPublishResult(topicIdx, data);
+    } catch(e) {
+      clearTimeout(timeout);
+      if (loadingEl) loadingEl.classList.add('hidden');
+      var errEl = document.getElementById('topic-publish-error-' + topicIdx);
+      if (errEl) {
+        errEl.classList.remove('hidden');
+        errEl.querySelector('.error-msg').textContent = '⚠️ ' + (e.message || '生成失败');
+      }
+    }
+  }
+
+  function renderPublishResult(topicIdx, data) {
+    var contentEl = document.getElementById('topic-publish-content-' + topicIdx);
+    if (!contentEl) return;
+
+    var html = '';
+
+    // Methodology summary
+    if (data.methodology_summary) {
+      html += '<div class="methodology-banner">' +
+        '📚 <strong>运营知识运用：</strong>' + data.methodology_summary +
+        '</div>';
+    }
+
+    // Publish guide
+    if (data.publish_guide) {
+      html += '<div class="publish-guide">' +
+        '📤 <strong>发布指引：</strong>' + data.publish_guide +
+        '</div>';
+    }
+
+    // Render 3 publish copies
+    var copies = data.publish_copies || [];
+    copies.forEach(function(copy, ci) {
+      var tagsHtml = '';
+      if (copy.tags && copy.tags.length) {
+        tagsHtml = copy.tags.map(function(t) { return '<span class="tag tag-s">' + t + '</span>'; }).join(' ');
+      }
+
+      var hookHtml = '';
+      if (copy.hook) {
+        hookHtml = '<div class="copy-hook">🎬 开头：' + copy.hook + '</div>';
+      }
+
+      var shootingHtml = '';
+      if (copy.shooting_tip) {
+        shootingHtml = '<div class="copy-shooting-tip">🎥 ' + copy.shooting_tip + '</div>';
+      }
+
+      var methodologyHtml = '';
+      if (copy.methodology_applied && copy.methodology_applied.length) {
+        methodologyHtml = '<div class="copy-methodology">' +
+          '💡 运营知识：' + copy.methodology_applied.map(function(m) {
+            return '<span class="methodology-tag">' + m + '</span>';
+          }).join(' ') +
+          '</div>';
+      }
+
+      html += '<div class="copy-card publish-card publish-card-v' + (ci+1) + '">' +
+        '<div class="copy-card-header">' +
+        '<span class="copy-type-badge copy-type-' + ci + '">' + (copy.version || '') + '</span>' +
+        '<button class="copy-btn-icon" data-copy="' + ci + '" title="复制">📋</button>' +
+        '</div>' +
+        '<h4 class="copy-title">' + (copy.title || '') + '</h4>' +
+        hookHtml +
+        '<div class="copy-body">' + (copy.body || '') + '</div>' +
+        shootingHtml +
+        methodologyHtml +
+        '<div class="copy-tags">' + tagsHtml + '</div>' +
+        '</div>';
+    });
+
+    contentEl.innerHTML = html;
+
+    // Bind copy buttons
+    contentEl.querySelectorAll('.copy-btn-icon').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var ci = parseInt(this.dataset.copy);
+        var copy = copies[ci];
+        if (!copy) return;
+        var text = '【' + (copy.version || '') + '】\n' +
+          (copy.title || '') + '\n\n' +
+          (copy.hook ? '🎬 开头：' + copy.hook + '\n\n' : '') +
+          (copy.body || '') + '\n\n' +
+          (copy.shooting_tip ? '🎥 拍摄：' + copy.shooting_tip + '\n' : '') +
+          (copy.methodology_applied ? '💡 运营知识：' + copy.methodology_applied.join(' / ') + '\n' : '') +
+          '\n' + (copy.tags ? copy.tags.join(' ') : '');
+        copyToClipboard(text, '✅ 已复制「' + (copy.version || '发布文案') + '」');
+      });
+    });
+  }
+
+  // ===== 发布文案按钮 =====
+  function initPublishCopyButtons() {
+    document.querySelectorAll('.btn-publish-copy').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var topicIdx = parseInt(this.dataset.topicIdx);
+        if (isNaN(topicIdx)) return;
+        handlePublishCopy(topicIdx);
+      });
+    });
+  }
+
+  // ===== 发布文案重试 =====
+  function initPublishRetryButtons() {
+    document.querySelectorAll('.btn-retry-publish').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var topicIdx = parseInt(this.dataset.topicIdx);
+        if (isNaN(topicIdx)) return;
+        handlePublishCopy(topicIdx);
+      });
+    });
+  }
+
   // ===== 初始化 =====
   function init() {
     cacheElements();
@@ -978,6 +1169,8 @@
     initTopicProductButtons();
     initTopicOralButtons();
     initTopicRetryButtons();
+    initPublishCopyButtons();
+    initPublishRetryButtons();
     initCopyCodeButtons();
     initWechatDetection();
 
