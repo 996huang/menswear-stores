@@ -639,6 +639,96 @@ body {
   white-space: nowrap;
 }
 
+/* ===== 发布文案 ===== */
+.topic-actions-3 { flex-wrap: wrap; }
+.topic-publish-area {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 2px dashed var(--border);
+}
+.publish-divider {
+  text-align: center;
+  font-size: .72em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.publish-divider span {
+  background: var(--bg);
+  padding: 2px 12px;
+  border-radius: 10px;
+}
+.btn-publish-copy {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, rgba(255,152,0,.15), rgba(255,193,7,.1));
+  border: 1px solid rgba(255,152,0,.35);
+  color: var(--orange);
+  border-radius: 10px;
+  font-size: .82em;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-publish-copy:hover, .btn-publish-copy:active {
+  background: linear-gradient(135deg, rgba(255,152,0,.25), rgba(255,193,7,.18));
+}
+.topic-publish-result { margin-top: 12px; }
+.topic-publish-loading { text-align: center; padding: 16px; }
+.topic-publish-error { text-align: center; padding: 12px; }
+.topic-publish-error .error-msg { color: var(--red); font-size: .85em; }
+.publish-card { border-left: 3px solid transparent; }
+.publish-card-v1 { border-left-color: var(--orange); }
+.publish-card-v2 { border-left-color: var(--blue); }
+.publish-card-v3 { border-left-color: var(--green); }
+
+/* ===== 方法论展示 ===== */
+.methodology-banner {
+  background: rgba(255,193,7,.08);
+  border: 1px solid rgba(255,193,7,.25);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: .75em;
+  color: #e6a817;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+.publish-guide {
+  background: rgba(88,166,255,.06);
+  border: 1px solid rgba(88,166,255,.2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: .73em;
+  color: var(--blue);
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+.copy-methodology {
+  margin-bottom: 8px;
+  font-size: .72em;
+  color: var(--orange);
+  line-height: 1.6;
+}
+.methodology-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgba(255,152,0,.1);
+  color: var(--orange);
+  margin: 1px 2px;
+  white-space: nowrap;
+}
+
+/* ===== 爆款元素展示 ===== */
+.topic-card-explosive {
+  margin-top: 6px;
+  font-size: .68em;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
 /* ===== 本地化提示 ===== */
 .local-tip {
   display: flex;
