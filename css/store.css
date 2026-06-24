@@ -593,6 +593,21 @@ body {
 .topic-result-loading { text-align: center; padding: 20px; }
 .topic-result-error { text-align: center; padding: 12px; }
 .topic-result-error .error-msg { color: var(--red); font-size: .85em; margin-bottom: 8px; }
+.topic-result-actions { display: flex; gap: 8px; margin-top: 10px; }
+.btn-topic-regenerate {
+  flex: 1;
+  padding: 7px 12px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: .75em;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-topic-regenerate:hover, .btn-topic-regenerate:active { border-color: var(--blue); color: var(--blue); background: rgba(88,166,255,.06); }
 .topic-analysis {
   display: flex;
   gap: 4px;
