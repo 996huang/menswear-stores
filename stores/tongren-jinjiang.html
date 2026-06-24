@@ -33,7 +33,7 @@
 </div>
 <div class="photo-previews" id="photo-previews"></div>
 
-<!-- 快速选择：颜色 + 风格 + 品牌 -->
+<!-- AI视觉自动识别颜色/品牌/风格，无需手动选择 -->
 <div class="product-form" id="product-form"
      data-store-name="铜仁锦江店"
      data-store-id="tongren-jinjiang"
@@ -42,49 +42,13 @@
      data-store-city="铜仁">
   <div class="form-row">
     <div>
-      <label>🎨 主色调 <span style="font-weight:normal;color:var(--muted);font-size:.85em">（点选，比AI视觉更准）</span></label>
-      <div class="color-quick-pick" id="color-pick">
-        <button type="button" class="color-chip" data-color="纯白" style="background:#fafafa;color:#333">白</button>
-        <button type="button" class="color-chip" data-color="象牙白" style="background:#fffff0;color:#333">象牙白</button>
-        <button type="button" class="color-chip" data-color="纯黑" style="background:#1a1a1a;color:#fff">黑</button>
-        <button type="button" class="color-chip" data-color="炭灰" style="background:#3a3f44;color:#fff">炭灰</button>
-        <button type="button" class="color-chip" data-color="浅灰" style="background:#bcbcbc;color:#333">浅灰</button>
-        <button type="button" class="color-chip" data-color="藏青" style="background:#1e3a5f;color:#fff">藏青</button>
-        <button type="button" class="color-chip" data-color="雾霾蓝" style="background:#8aa4b8;color:#fff">雾霾蓝</button>
-        <button type="button" class="color-chip" data-color="卡其" style="background:#c4ae8a;color:#333">卡其</button>
-        <button type="button" class="color-chip" data-color="军绿" style="background:#5a5e3a;color:#fff">军绿</button>
-        <button type="button" class="color-chip" data-color="酒红" style="background:#782a36;color:#fff">酒红</button>
-        <button type="button" class="color-chip" data-color="深蓝" style="background:#1b2d4a;color:#fff">深蓝</button>
-        <button type="button" class="color-chip" data-color="米色" style="background:#edd9b3;color:#333">米色</button>
-        <button type="button" class="color-chip" data-color="棕色" style="background:#6b4226;color:#fff">棕色</button>
-        <button type="button" class="color-chip" data-color="墨绿" style="background:#2d4a32;color:#fff">墨绿</button>
-      </div>
-      <input type="hidden" id="prod-color" value="">
-    </div>
-  </div>
-  <div class="form-row">
-    <div>
-      <label>👔 风格 / 版型</label>
-      <div class="style-quick-pick" id="style-pick">
-        <button type="button" class="style-chip" data-style="轻奢休闲">轻奢休闲</button>
-        <button type="button" class="style-chip" data-style="商务精英">商务精英</button>
-        <button type="button" class="style-chip" data-style="潮流街头">潮流街头</button>
-        <button type="button" class="style-chip" data-style="日系简约">日系简约</button>
-        <button type="button" class="style-chip" data-style="运动户外">运动户外</button>
-        <button type="button" class="style-chip" data-style="意式优雅">意式优雅</button>
-      </div>
-      <input type="hidden" id="prod-style" value="">
-    </div>
-  </div>
-  <div class="form-row">
-    <div>
-      <label>产品名称</label>
-      <input type="text" id="prod-name" placeholder="例：2026夏季POLO衫 经典黑">
+      <label>产品名称（选填）</label>
+      <input type="text" id="prod-name" placeholder="例：2026夏季POLO衫">
     </div>
     <div>
       <label>品牌</label>
       <select id="prod-brand">
-        <option value="">选择品牌</option>
+        <option value="">AI 自动识别</option>
 <option value="卡尔拉格斐(老佛爷)">卡尔拉格斐(老佛爷)</option>
 <option value="JOHN RICHMOND">JOHN RICHMOND</option>
 <option value="RR/ORRDT">RR/ORRDT</option>
@@ -92,19 +56,9 @@
       </select>
     </div>
   </div>
-  <div class="form-row">
-    <div>
-      <label>文案类型</label>
-      <select id="prod-copy-type">
-        <option value="product">产品种草</option>
-        <option value="store_visit">到店引流</option>
-        <option value="testimonial">客户证言</option>
-      </select>
-    </div>
-  </div>
   <div>
-    <label>补充说明（搭配建议 / 面料细节）</label>
-    <textarea id="prod-notes" placeholder="例：下身搭浅蓝水洗牛仔裤，银饰配件点缀，面料是120支丝光棉..." rows="2"></textarea>
+    <label>补充说明（选填）</label>
+    <textarea id="prod-notes" placeholder="例：搭配建议、面料细节、拍摄想法..." rows="2"></textarea>
   </div>
 
   <!-- 主操作按钮 -->
