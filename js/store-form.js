@@ -46,6 +46,34 @@
   }
 
   // ===== 图片选择 =====
+  // ===== 颜色/风格快速选择 =====
+  function initQuickPicks() {
+    // 颜色快速选择
+    var colorPick = document.getElementById('color-pick');
+    if (colorPick) {
+      colorPick.addEventListener('click', function(e) {
+        var chip = e.target.closest('.color-chip');
+        if (!chip) return;
+        colorPick.querySelectorAll('.color-chip').forEach(function(c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        var colorInput = document.getElementById('prod-color');
+        if (colorInput) colorInput.value = chip.dataset.color;
+      });
+    }
+    // 风格快速选择
+    var stylePick = document.getElementById('style-pick');
+    if (stylePick) {
+      stylePick.addEventListener('click', function(e) {
+        var chip = e.target.closest('.style-chip');
+        if (!chip) return;
+        stylePick.querySelectorAll('.style-chip').forEach(function(c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        var styleInput = document.getElementById('prod-style');
+        if (styleInput) styleInput.value = chip.dataset.style;
+      });
+    }
+  }
+
   function initPhotoInput() {
     if (!els.photoInput || !els.previews) return;
 
@@ -230,6 +258,8 @@
     var productInfo = {
       name: getVal('prod-name'),
       brand: getVal('prod-brand'),
+      color: getVal('prod-color'),
+      style: getVal('prod-style'),
       notes: getVal('prod-notes')
     };
 
@@ -1161,6 +1191,7 @@
     cacheElements();
     if (!els.form) return; // 不在门店页面
 
+    initQuickPicks();
     initPhotoInput();
     initGenerateButton();
     initRetry();
