@@ -440,6 +440,11 @@
       }
       setPhase('results');
       showToast('✅ 文案生成完成');
+
+      // 自动生成AI模特图
+      if (state.selectedImages.length > 0 && data.analysis) {
+        generateModelImages(data.analysis);
+      }
     } catch (e) {
       console.error('Generate error:', e);
       setPhase('error', e.message || '未知错误');
@@ -557,6 +562,110 @@
       '  附带拍摄脚本、推荐标签、本地化建议\n';
 
     return text;
+  }
+
+  // ===== AI模特图生成 =====
+  function buildModelPrompt(analysis, shot) {
+    var color = '';
+    var cp = analysis.color_palette;
+    if (cp && cp.primary) {
+      color = cp.primary;
+      if (cp.secondary) color += ' and ' + cp.secondary;
+    } else if (analysis.color_scheme) {
+      color = analysis.color_scheme;
+    }
+
+    var style = analysis.style_category || 'casual';
+    var product = analysis.product_category || 'menswear';
+    var fit = analysis.fit_silhouette || 'regular fit';
+
+    var fab = analysis.fabric || {};
+    var fabricDesc = fab.texture || '';
+    if (fab.composition) fabricDesc = fab.composition + ' ' + fabricDesc;
+
+    // Map occasion to English scene
+    var occasion = analysis.occasion || '';
+    var scenes = {
+      '商务通勤': 'modern bright office lobby with glass walls',
+      '休闲社交': 'trendy cafe street with warm afternoon light',
+      '度假旅行': 'luxury resort hotel terrace with ocean view',
+      '正式场合': 'elegant modern event space',
+      '运动户外': 'sunlit urban park',
+      '多场景通用': 'modern city street with natural light'
+    };
+    var scene = scenes[occasion] || 'modern city street with natural light';
+
+    var baseDesc = 'Chinese male model, 30-35 years old, wearing ' + color + ' ' + style + ' ' + product;
+    if (fabricDesc) baseDesc += ', ' + fabricDesc + ' fabric';
+    if (fit) baseDesc += ', ' + fit;
+
+    if (shot === 'full') {
+      return 'professional fashion photography, full body shot of ' + baseDesc + ', standing in ' + scene + ', soft natural lighting, clean composition, 8k quality, editorial menswear style';
+    } else {
+      return 'professional fashion photography, half body portrait close-up of ' + baseDesc + ', showing collar neckline and shoulder detail, studio lighting with soft shadows, fabric texture visible, 8k quality, fashion editorial';
+    }
+  }
+
+  function generateModelImages(analysis) {
+    var gallery = document.getElementById('model-gallery');
+    var loading = document.getElementById('model-loading');
+    var grid = document.getElementById('model-grid');
+    if (!gallery || !grid) return;
+
+    gallery.classList.remove('hidden');
+    loading.classList.remove('hidden');
+    grid.innerHTML = '';
+
+    var prompts = [
+      { shot: 'full', label: '全身搭配照', w: 512, h: 896 },
+      { shot: 'half', label: '半身细节照', w: 512, h: 512 }
+    ];
+
+    var loaded = 0;
+
+    prompts.forEach(function(p, i) {
+      var promptText = buildModelPrompt(analysis, p.shot);
+      var imgUrl = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(promptText) +
+        '?width=' + p.w + '&height=' + p.h + '&nologo=true&model=flux';
+
+      var card = document.createElement('div');
+      card.className = 'model-img-card';
+
+      var img = document.createElement('img');
+      img.src = imgUrl;
+      img.alt = p.label;
+      img.loading = 'lazy';
+
+      img.onload = function() {
+        loaded++;
+        if (loaded >= prompts.length) {
+          loading.classList.add('hidden');
+        }
+      };
+
+      img.onerror = function() {
+        loaded++;
+        this.style.display = 'none';
+        card.querySelector('.model-img-fallback').style.display = 'block';
+        if (loaded >= prompts.length) {
+          loading.classList.add('hidden');
+        }
+      };
+
+      var label = document.createElement('span');
+      label.className = 'model-img-label';
+      label.textContent = p.label;
+
+      var fallback = document.createElement('div');
+      fallback.className = 'model-img-fallback';
+      fallback.style.display = 'none';
+      fallback.textContent = '🖼️ ' + p.label + ' 生成中...';
+
+      card.appendChild(img);
+      card.appendChild(fallback);
+      card.appendChild(label);
+      grid.appendChild(card);
+    });
   }
 
   // ===== Toast 提示 =====
