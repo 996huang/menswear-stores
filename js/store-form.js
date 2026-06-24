@@ -392,6 +392,13 @@
         shootingHtml = '<div class="copy-shooting-tip">🎥 拍摄建议：' + copy.shooting_tip + '</div>';
       }
 
+      var methodHtml = '';
+      if (copy.methodology_applied && copy.methodology_applied.length) {
+        methodHtml = '<div class="copy-methodology">💡 运营知识：' +
+          copy.methodology_applied.map(function(m) { return '<span class="methodology-tag">' + m + '</span>'; }).join(' ') +
+          '</div>';
+      }
+
       html += '<div class="copy-card">' +
         '<div class="copy-card-header">' +
         '<span class="copy-type-badge ' + (typeColors[i] || '') + '">' + copy.type + '</span>' +
@@ -401,6 +408,7 @@
         hookHtml +
         '<div class="copy-body">' + (copy.body || '') + '</div>' +
         shootingHtml +
+        methodHtml +
         '<div class="copy-tags">' + tagsHtml + '</div>' +
         '</div>';
     });
@@ -823,6 +831,13 @@
           shootingHtml = '<div class="copy-shooting-tip">🎥 ' + copy.shooting_tip + '</div>';
         }
 
+        var methodHtml = '';
+        if (copy.methodology_applied && copy.methodology_applied.length) {
+          methodHtml = '<div class="copy-methodology">💡 运营知识：' +
+            copy.methodology_applied.map(function(m) { return '<span class="methodology-tag">' + m + '</span>'; }).join(' ') +
+            '</div>';
+        }
+
         var canRewrite = copy.can_rewrite;
         var rewriteHtml = '';
         if (canRewrite) {
@@ -842,6 +857,7 @@
           (frameworkHtml || '') +
           '<div class="copy-body">' + (copy.body || '') + '</div>' +
           shootingHtml +
+          methodHtml +
           '<div class="copy-tags">' + tagsHtml + '</div>' +
           '</div>';
       });
