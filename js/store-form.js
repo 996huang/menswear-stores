@@ -566,43 +566,56 @@
 
   // ===== AI模特图生成 =====
   function buildModelPrompt(analysis, shot) {
-    var color = '';
+    // Simplify color names for image generation
+    var colorName = '';
     var cp = analysis.color_palette;
     if (cp && cp.primary) {
-      color = cp.primary;
-      if (cp.secondary) color += ' and ' + cp.secondary;
+      var c = cp.primary;
+      // Map Chinese color names to simple English
+      var colorMap = {
+        '纯白':'white', '象牙白':'ivory white', '米白':'cream white', '纯黑':'black', '炭黑':'charcoal black',
+        '浅灰':'light gray', '深灰':'dark gray', '银灰':'silver gray', '炭灰':'charcoal gray',
+        '藏青':'navy blue', '深蓝':'dark blue', '雾霾蓝':'dusty blue', '浅蓝':'light blue', '天蓝':'sky blue',
+        '卡其':'khaki', '驼色':'camel', '米色':'beige', '棕色':'brown', '咖啡色':'coffee brown',
+        '酒红':'burgundy', '勃艮第红':'burgundy red', '正红':'red',
+        '军绿':'army green', '橄榄绿':'olive green', '薄荷绿':'mint green',
+        '橙色':'orange', '明黄':'yellow', '粉色':'pink'
+      };
+      colorName = colorMap[c] || c.replace(/\/.*/, '').toLowerCase();
+      if (cp.secondary) {
+        var c2 = colorMap[cp.secondary] || cp.secondary.replace(/\/.*/, '').toLowerCase();
+        colorName += ' and ' + c2;
+      }
     } else if (analysis.color_scheme) {
-      color = analysis.color_scheme;
+      colorName = analysis.color_scheme.toLowerCase();
     }
+    if (!colorName) colorName = 'neutral tone';
 
-    var style = analysis.style_category || 'casual';
-    var product = analysis.product_category || 'menswear';
-    var fit = analysis.fit_silhouette || 'regular fit';
+    var style = (analysis.style_category || 'casual').toLowerCase();
+    var product = (analysis.product_category || 'menswear').toLowerCase();
 
+    // Short fabric description
     var fab = analysis.fabric || {};
-    var fabricDesc = fab.texture || '';
-    if (fab.composition) fabricDesc = fab.composition + ' ' + fabricDesc;
+    var fabricShort = fab.texture || fab.composition || '';
+    if (fabricShort.length > 30) fabricShort = fabricShort.substring(0, 30);
 
-    // Map occasion to English scene
+    // Short scene
     var occasion = analysis.occasion || '';
     var scenes = {
-      '商务通勤': 'modern bright office lobby with glass walls',
-      '休闲社交': 'trendy cafe street with warm afternoon light',
-      '度假旅行': 'luxury resort hotel terrace with ocean view',
-      '正式场合': 'elegant modern event space',
-      '运动户外': 'sunlit urban park',
-      '多场景通用': 'modern city street with natural light'
+      '商务通勤': 'modern office', '休闲社交': 'trendy cafe',
+      '度假旅行': 'luxury resort', '正式场合': 'elegant event space',
+      '运动户外': 'urban park', '多场景通用': 'city street'
     };
-    var scene = scenes[occasion] || 'modern city street with natural light';
+    var scene = scenes[occasion] || 'city street';
 
-    var baseDesc = 'Chinese male model, 30-35 years old, wearing ' + color + ' ' + style + ' ' + product;
-    if (fabricDesc) baseDesc += ', ' + fabricDesc + ' fabric';
-    if (fit) baseDesc += ', ' + fit;
+    // Keep prompt concise (under 200 chars total to avoid URL issues)
+    var desc = 'male model wearing ' + colorName + ' ' + style + ' ' + product;
+    if (fabricShort) desc += ', ' + fabricShort;
 
     if (shot === 'full') {
-      return 'professional fashion photography, full body shot of ' + baseDesc + ', standing in ' + scene + ', soft natural lighting, clean composition, 8k quality, editorial menswear style';
+      return desc + ', full body in ' + scene + ', fashion photo, natural light';
     } else {
-      return 'professional fashion photography, half body portrait close-up of ' + baseDesc + ', showing collar neckline and shoulder detail, studio lighting with soft shadows, fabric texture visible, 8k quality, fashion editorial';
+      return desc + ', half body portrait, studio light, detail shot';
     }
   }
 
@@ -617,8 +630,8 @@
     grid.innerHTML = '';
 
     var prompts = [
-      { shot: 'full', label: '全身搭配照', w: 512, h: 896 },
-      { shot: 'half', label: '半身细节照', w: 512, h: 512 }
+      { shot: 'full', label: '全身搭配照', w: 384, h: 672 },
+      { shot: 'half', label: '半身细节照', w: 384, h: 384 }
     ];
 
     var loaded = 0;
