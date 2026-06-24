@@ -235,7 +235,7 @@
 
     // 调用 Worker
     var controller = new AbortController();
-    var timeout = setTimeout(function() { controller.abort(); }, 45000); // 45s timeout
+    var timeout = setTimeout(function() { controller.abort(); }, 90000); // 90s timeout
 
     try {
       var response = await fetch(workerUrl, {
@@ -701,7 +701,7 @@
     };
 
     var controller = new AbortController();
-    var timeout = setTimeout(function() { controller.abort(); }, 60000);
+    var timeout = setTimeout(function() { controller.abort(); }, 90000); // 90s timeout
 
     try {
       var response = await fetch(workerUrl, {
@@ -878,7 +878,7 @@
     };
 
     var controller = new AbortController();
-    var timeout = setTimeout(function() { controller.abort(); }, 60000);
+    var timeout = setTimeout(function() { controller.abort(); }, 90000); // 90s timeout
 
     try {
       var response = await fetch(workerUrl, {
