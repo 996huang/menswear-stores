@@ -858,8 +858,10 @@
       });
     });
 
-    // Show publish area after basic content is generated
+    // Show publish area and regenerate buttons after basic content is generated
     showPublishArea(topicIdx);
+    var actionsEl = document.getElementById('topic-actions-' + topicIdx);
+    if (actionsEl) actionsEl.classList.remove('hidden');
   }
 
   // ===== 仿写（换个风格）=====
@@ -959,6 +961,21 @@
         var topicIdx = parseInt(this.dataset.topicIdx);
         if (isNaN(topicIdx)) return;
         handleTopicGenerate(topicIdx, 'oral_rewrite');
+      });
+    });
+  }
+
+  // ===== 选题重新生成按钮 =====
+  function initTopicRegenerateButtons() {
+    document.querySelectorAll('.btn-topic-regenerate').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var topicIdx = parseInt(this.dataset.topicIdx);
+        var mode = this.dataset.mode || 'oral_rewrite';
+        if (isNaN(topicIdx)) return;
+        // Scroll to the topic result area
+        var resultEl = document.getElementById('topic-result-' + topicIdx);
+        if (resultEl) resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        handleTopicGenerate(topicIdx, mode);
       });
     });
   }
@@ -1185,6 +1202,7 @@
     initLegacyFeatures();
     initTopicProductButtons();
     initTopicOralButtons();
+    initTopicRegenerateButtons();
     initTopicRetryButtons();
     initPublishCopyButtons();
     initPublishRetryButtons();
