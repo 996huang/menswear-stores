@@ -237,39 +237,41 @@
     var controller = new AbortController();
     var timeout = setTimeout(function() { controller.abort(); }, 90000); // 90s timeout
 
-    try {
-      var response = await fetch(workerUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          images: compressedImages,
-          storeId: storeId,
-          storeName: storeName,
-          brands: storeBrands,
-          productInfo: productInfo
-        }),
-        signal: controller.signal
-      });
-      clearTimeout(timeout);
+    // 最多重试3次，每次间隔3秒
+    var maxRetries = 3;
+    var lastError = null;
 
-      if (!response.ok) {
-        var errData;
-        try {
-          errData = await response.json();
-        } catch (e) {
-          errData = { error: 'HTTP ' + response.status };
+    for (var attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        var response = await fetch(workerUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            images: compressedImages,
+            storeId: storeId,
+            storeName: storeName,
+            brands: storeBrands,
+            productInfo: productInfo
+          }),
+          signal: controller.signal
+        });
+        clearTimeout(timeout);
+
+        if (!response.ok) {
+          var errData;
+          try { errData = await response.json(); } catch (e) { errData = { error: 'HTTP ' + response.status }; }
+          throw new Error(errData.error || '请求失败 (' + response.status + ')');
         }
-        throw new Error(errData.error || '请求失败 (' + response.status + ')');
-      }
 
-      return await response.json();
-    } catch (e) {
-      clearTimeout(timeout);
-      if (e.name === 'AbortError') {
-        throw new Error('请求超时（45秒），请检查网络后重试');
+        return await response.json();
+      } catch (e) {
+        clearTimeout(timeout);
+        lastError = e;
+        if (e.name === 'AbortError') lastError = new Error('请求超时，请检查网络后重试');
+        if (attempt < maxRetries) await new Promise(function(r) { setTimeout(r, 3000); });
       }
-      throw e;
     }
+    throw lastError || new Error('请求失败，请重试');
   }
 
   function getVal(id) {
