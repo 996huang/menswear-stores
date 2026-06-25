@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://beverages-exists-freeware-trips.trycloudflare.com';
+window.__API_URL__ = 'https://uses-worldwide-analytical-boys.trycloudflare.com';
