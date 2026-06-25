@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://mainstream-thomson-reverse-peter.trycloudflare.com';
+window.__API_URL__ = 'https://supply-dietary-ace-fit.trycloudflare.com';
