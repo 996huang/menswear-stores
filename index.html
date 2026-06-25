@@ -3,209 +3,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>男装9店选题中心 · 仟徒男装</title>
+<title>仟徒男装 · 9店智能选题中心</title>
+<link rel="stylesheet" href="css/store.css?v=1782382795">
 <style>
-:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--blue:#58a6ff;--red:#f85149;--orange:#d2991d;--green:#3fb950;--purple:#a371f7;--gold:#d4a574}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.6;padding:16px;max-width:860px;margin:0 auto}
-h1{font-size:1.5em;color:#fff;text-align:center;margin:12px 0 4px}
-h2{font-size:1.05em;color:#f0f6fc;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.subtitle{text-align:center;color:var(--muted);font-size:.82em;margin-bottom:16px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;margin:10px 0}
-.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.75em;font-weight:600;margin:2px 3px}
-.tag-hot{background:rgba(248,81,73,.15);color:var(--red)}
-.tag-new{background:rgba(63,185,80,.15);color:var(--green)}
-.tag-event{background:rgba(163,113,247,.15);color:var(--purple)}
-.tag-platform{background:rgba(88,166,255,.12);color:var(--blue)}
-.store-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
-@media(max-width:480px){.store-grid{grid-template-columns:repeat(2,1fr)}}
-.store-btn{display:block;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 10px;text-align:center;text-decoration:none;color:var(--text);transition:all .2s;font-size:.82em}
-.store-btn:hover{border-color:var(--blue);background:rgba(88,166,255,.06)}
-.store-btn .sname{font-weight:600;color:#f0f6fc;display:block;margin-bottom:1px}
-.store-btn .scity{font-size:.72em;color:var(--muted)}
-.store-btn .sbrands{font-size:.68em;color:var(--muted);margin-top:2px;line-height:1.3}
-.topic-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-.topic-item:last-child{border-bottom:none}
-.topic-num{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8em;flex-shrink:0}
-.topic-num.s{background:rgba(248,81,73,.2);color:var(--red)}
-.topic-num.a{background:rgba(210,153,29,.2);color:var(--orange)}
-.topic-num.b{background:rgba(139,148,158,.15);color:var(--muted)}
-.topic-info{flex:1;min-width:0}
-.topic-title{font-weight:600;color:#f0f6fc;font-size:.88em}
-.topic-desc{font-size:.76em;color:var(--muted);margin-top:2px}
-.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7em;font-weight:700;margin-left:4px;vertical-align:middle}
-.badge-s{background:var(--red);color:#fff}.badge-a{background:var(--orange);color:#000}.badge-b{background:var(--muted);color:#000}
-.highlight{border-left:3px solid var(--blue);padding:8px 12px;margin:8px 0;background:rgba(88,166,255,.05);border-radius:0 6px 6px 0;font-size:.83em}
-.footer{text-align:center;color:var(--muted);font-size:.75em;margin:24px 0 16px;padding-top:16px;border-top:1px solid var(--border)}
+  /* 选题中心独有样式 */
+  .index-header {
+    text-align: center;
+    margin: 20px 0 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .index-header::before {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 16px;
+  }
+  .index-header h1 { font-size: 1.4em; color: #fff; font-weight: 700; }
+  .index-header .subtitle { color: var(--muted); font-size: .78em; margin-top: 4px; }
 
-/* Video reference links */
-.video-ref{display:flex;align-items:center;gap:6px;padding:2px 0;font-size:.74em;margin-top:3px}
-.platform-icon{width:18px;height:18px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:.65em;flex-shrink:0;font-weight:700}
-.platform-dy{background:#111;color:#fff}.platform-xhs{background:#fe2c55;color:#fff}.platform-sph{background:#fa9d3b;color:#fff}
-.video-ref a{color:var(--blue);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.video-ref a:hover{text-decoration:underline}
+  .store-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 12px 0;
+  }
+  @media (max-width: 480px) { .store-grid { grid-template-columns: repeat(2, 1fr); } }
 
-/* Upload cta */
-.upload-cta{background:linear-gradient(135deg,rgba(63,185,80,.1),rgba(88,166,255,.06));border:2px solid var(--green);border-radius:10px;padding:14px;margin:10px 0;text-align:center}
-.upload-cta h2{color:var(--green);justify-content:center;margin-bottom:6px}
-.upload-cta .cta-desc{font-size:.8em;color:var(--muted);margin-bottom:10px}
-.upload-cta .cta-btn{display:inline-block;background:var(--green);color:#000;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:700;font-size:.9em;margin:4px}
-.upload-cta .cta-btn.outline{background:transparent;border:1px solid var(--green);color:var(--green)}
+  .store-btn {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text);
+    transition: all .2s;
+    font-size: .8em;
+  }
+  .store-btn:hover {
+    border-color: var(--gold);
+    background: var(--gold-muted);
+  }
+  .store-btn .sname { font-weight: 700; color: var(--text-bright); display: block; margin-bottom: 2px; }
+  .store-btn .scity { font-size: .7em; color: var(--muted); }
+  .store-btn .sbrands { font-size: .66em; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+
+  /* 选题列表 */
+  .topic-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .topic-list-item:last-child { border-bottom: none; }
+  .topic-list-num {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: .78em; flex-shrink: 0;
+  }
+  .topic-list-num.s { background: var(--gold-muted); color: var(--gold); }
+  .topic-list-num.a { background: rgba(88,166,255,.1); color: var(--blue); }
+  .topic-list-num.b { background: rgba(139,148,158,.1); color: var(--muted); }
+  .topic-list-info { flex: 1; min-width: 0; }
+  .topic-list-title { font-weight: 700; color: var(--text-bright); font-size: .88em; }
+  .topic-list-desc { font-size: .72em; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .topic-list-elements { font-size: .66em; color: var(--gold); margin-top: 2px; }
+
+  .badge {
+    display: inline-block; padding: 1px 6px; border-radius: 4px;
+    font-size: .65em; font-weight: 700; margin-left: 4px; vertical-align: middle;
+  }
+  .badge-s { background: var(--gold-muted); color: var(--gold); }
+  .badge-a { background: rgba(88,166,255,.12); color: var(--blue); }
+  .badge-b { background: rgba(139,148,158,.1); color: var(--muted); }
+
+  .highlight {
+    border-left: 3px solid var(--gold);
+    padding: 8px 12px; margin: 8px 0;
+    background: var(--gold-muted);
+    border-radius: 0 6px 6px 0;
+    font-size: .82em; line-height: 1.6;
+  }
+
+  .trend-tag {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: .65em; font-weight: 600; margin: 1px 4px 1px 0;
+  }
+  .trend-dy { background: #111; color: #fff; }
+  .trend-xhs { background: rgba(254,44,85,.12); color: #fe2c55; }
+
+  .footer {
+    text-align: center; color: var(--muted); font-size: .72em;
+    margin: 24px 0 16px; padding-top: 16px;
+    border-top: 1px solid var(--border); line-height: 1.8;
+  }
+  .footer a { color: var(--muted); text-decoration: none; transition: color .15s; }
+  .footer a:hover { color: var(--gold); }
 </style>
 </head>
 <body>
 
-<h1>👔 仟徒男装 · 9店智能选题中心</h1>
-<p class="subtitle">📅 2026年第26周 · 6月22日-28日 · 国际轻奢集合店 · 自动更新</p>
-
-<!-- ===== 📸 上传入口 ===== -->
-<div class="upload-cta">
-<h2>📸 店长上传产品搭配图</h2>
-<p class="cta-desc">每家门店配备独立AI智能体 — 上传产品图 → 自动生成3版文案 → 审核后发布</p>
-<a href="#stores" class="cta-btn">🏪 进入我的门店</a>
-<a href="shortcuts/install.html" class="cta-btn outline">📲 安装快捷指令</a>
+<div class="index-header">
+  <h1>仟徒男装 · 9店智能选题中心</h1>
+  <p class="subtitle">2026年 第27周 · 6月25日–7月1日 · 基于抖音/小红书实时热搜</p>
 </div>
 
 <!-- ===== 本周 TOP 5 爆款选题 ===== -->
 <div class="card">
 <h2>🔥 本周 TOP 5 爆款选题</h2>
 
-<div class="topic-item">
-<div class="topic-num s">1</div>
-<div class="topic-info">
-<div class="topic-title">「父亲节余热 — 给爸爸的衣柜升级计划」 <span class="badge badge-s">S</span></div>
-<div class="topic-desc">父亲节情感延续 · 小红书+抖音双平台 · 适用全部门店 · 老佛爷POLO衫/GUDUTTI定制强关联</div>
-<div class="video-ref"><span class="platform-icon platform-dy">抖</span><a href="https://www.douyin.com/search/父亲节送爸爸衣服改造" target="_blank" rel="noopener">📹 对标视频：父亲节穿搭改造合集</a></div>
-<div class="video-ref"><span class="platform-icon platform-xhs">红</span><a href="https://www.xiaohongshu.com/search_result?keyword=父亲节+男装+品质" target="_blank" rel="noopener">📹 对标笔记：父亲节送礼 · 品质男装推荐</a></div>
+<div class="topic-list-item">
+  <div class="topic-list-num s">1</div>
+  <div class="topic-list-info">
+    <div class="topic-list-title">#恋夏风席卷全城：一件亚麻古巴领衬衫，从办公室穿到海边 <span class="badge badge-s">S级·流量型</span></div>
+    <div class="topic-list-desc">抖音50亿+播放顶流话题。都市度假+户外机能两大分支，一衣两穿（通勤配西裤=轻商务，周末敞开+短裤=度假风）</div>
+    <div class="topic-list-elements">💥 反差(通勤vs度假) + 人群 + 猎奇 | 框架：强弱对比法 + 教知识</div>
+  </div>
+</div>
+
+<div class="topic-list-item">
+  <div class="topic-list-num s">2</div>
+  <div class="topic-list-info">
+    <div class="topic-list-title">七分裤杀回来了：16年男装经验，告诉你怎么穿不显腿短 <span class="badge badge-s">S级·人设型</span></div>
+    <div class="topic-list-desc">小红书6万+笔记的年度爆款单品。DIOR/LV大牌秀场力推，3个黄金法则（膝盖上2cm/微锥版型/露脚踝配浅口鞋）</div>
+    <div class="topic-list-elements">💥 怀旧(七分裤回归) + 人群(体型焦虑) + 头牌(16年) | 框架：三句话框架 + 教知识</div>
+  </div>
+</div>
+
+<div class="topic-list-item">
+  <div class="topic-list-num a">3</div>
+  <div class="topic-list-info">
+    <div class="topic-list-title">出门5分钟裤子贴腿上？冰丝机能裤让你从早到晚干爽 <span class="badge badge-a">A级·出单型</span></div>
+    <div class="topic-list-desc">城市户外风+功能面料大年。防晒服饰类目增长5000%，凉感系数0.3，四面弹力，一条搞定通勤+户外+休闲三场景</div>
+    <div class="topic-list-elements">💥 痛点(闷汗) + 最差(裹粽子) + 成本(一裤三用) | 框架：强弱对比法 + 教知识</div>
+  </div>
+</div>
+
+<div class="topic-list-item">
+  <div class="topic-list-num a">4</div>
+  <div class="topic-list-info">
+    <div class="topic-list-title">夏天穿西装的男人不是疯了：会呼吸的夏日西装 <span class="badge badge-a">A级·人设型</span></div>
+    <div class="topic-list-desc">新商务美学：小红书148亿+浏览的夏季穿搭新赛道。无衬里+天丝亚麻混纺+半衬工艺，比普通西装轻一半</div>
+    <div class="topic-list-elements">💥 反差(夏天穿西装) + 猎奇(会呼吸) + 头牌(16年) | 框架：三句话框架</div>
+  </div>
+</div>
+
+<div class="topic-list-item">
+  <div class="topic-list-num b">5</div>
+  <div class="topic-list-info">
+    <div class="topic-list-title">CleanFit统治夏天第三年：3件基础款，一周五天不重样 <span class="badge badge-b">B级·流量型</span></div>
+    <div class="topic-list-desc">CleanFit搜索量增长52%，三年霸榜。3×5搭配系统（重磅白T+微锥九分裤+廓形衬衫=5天排列组合）</div>
+    <div class="topic-list-elements">💥 反差(基础款×高级感) + 人群 + 成本(3件5天) | 框架：教知识结构</div>
+  </div>
 </div>
 </div>
 
-<div class="topic-item">
-<div class="topic-num s">2</div>
-<div class="topic-info">
-<div class="topic-title">「2026夏至后 — 高温穿搭指南：这5套清凉Look直接抄」 <span class="badge badge-s">S</span></div>
-<div class="topic-desc">夏至热点延续1100万热度 · 图文收藏价值高 · 透气面料/凉感POLO为核心卖点</div>
-<div class="video-ref"><span class="platform-icon platform-dy">抖</span><a href="https://www.douyin.com/search/夏季男士清凉穿搭" target="_blank" rel="noopener">📹 对标视频：男士夏季清凉穿搭推荐</a></div>
-<div class="video-ref"><span class="platform-icon platform-xhs">红</span><a href="https://www.xiaohongshu.com/search_result?keyword=男生夏季穿搭+透气+高级感" target="_blank" rel="noopener">📹 对标笔记：男生夏季高级感穿搭</a></div>
-</div>
-</div>
-
-<div class="topic-item">
-<div class="topic-num s">3</div>
-<div class="topic-info">
-<div class="topic-title">「女生也抢着穿的男装！5件被低估的宝藏单品」 <span class="badge badge-s">S</span></div>
-<div class="topic-desc">女性买男装趋势爆发 · 跨性别流量密码 · 小红书爆款 · 适用CNC/JOHN RICHMOND潮流品牌</div>
-<div class="video-ref"><span class="platform-icon platform-xhs">红</span><a href="https://www.xiaohongshu.com/search_result?keyword=女生穿男装+宝藏单品" target="_blank" rel="noopener">📹 对标笔记：女生抢着穿的男装品牌合集</a></div>
-</div>
-</div>
-
-<div class="topic-item">
-<div class="topic-num a">4</div>
-<div class="topic-info">
-<div class="topic-title">「老钱风翻车实录：这3个坑你一定踩过」 <span class="badge badge-a">A</span></div>
-<div class="topic-desc">反向避雷辨识度高 · 小红书34万篇老钱风内容中差异化突围 · 适合老佛爷/华伦天奴品牌</div>
-<div class="video-ref"><span class="platform-icon platform-dy">抖</span><a href="https://www.douyin.com/search/老钱风翻车穿搭避雷" target="_blank" rel="noopener">📹 对标视频：老钱风翻车合集</a></div>
-<div class="video-ref"><span class="platform-icon platform-xhs">红</span><a href="https://www.xiaohongshu.com/search_result?keyword=老钱风+避雷+男装" target="_blank" rel="noopener">📹 对标笔记：老钱风穿搭避雷指南</a></div>
-</div>
-</div>
-
-<div class="topic-item">
-<div class="topic-num a">5</div>
-<div class="topic-info">
-<div class="topic-title">「1680元POLO衫 vs 200元POLO衫 暴力对比」 <span class="badge badge-a">A</span></div>
-<div class="topic-desc">测评类完播率极高 · 面料/做工/版型三维对比 · 评论区"求对比"需求本月激增</div>
-<div class="video-ref"><span class="platform-icon platform-dy">抖</span><a href="https://www.douyin.com/search/POLO衫价格对比测评" target="_blank" rel="noopener">📹 对标视频：价格对比测评类模板</a></div>
-<div class="video-ref"><span class="platform-icon platform-xhs">红</span><a href="https://www.xiaohongshu.com/search_result?keyword=POLO衫+测评+值得买" target="_blank" rel="noopener">📹 对标笔记：POLO衫值不值得买测评</a></div>
-</div>
-</div>
-</div>
-
-<!-- ===== 各平台热搜 ===== -->
+<!-- ===== 趋势来源 ===== -->
 <div class="card">
-<h2>📊 各平台热搜趋势</h2>
-<div style="font-size:.85em">
-<p><span class="tag tag-hot">🔴 618返场</span> 电商大促返场期 · 男装品类折扣内容流量好</p>
-<p style="margin-top:4px"><span class="tag tag-platform">抖音</span> 夏至 1115万 · 父亲节 1216万 · 老钱风穿搭 · 重磅T恤测评</p>
-<p style="margin-top:4px"><span class="tag tag-platform">微博</span> 人民日报批烂梗 · 端午文旅消费 · 蔡磊渐冻症宣战</p>
-<p style="margin-top:4px"><span class="tag tag-event">下周预告</span> 暑期档正式开启 · 出游穿搭需求上升 · 轻商务夏季外套关注度走高</p>
+<h2>📊 趋势数据来源</h2>
+<div style="font-size:.82em;line-height:1.8">
+  <p><span class="trend-tag trend-dy">抖音</span> #恋夏风 50亿+播放 · 城市户外风防晒类目增长5000% · 七分裤穿搭搜索量暴增</p>
+  <p><span class="trend-tag trend-xhs">小红书</span> 七分裤6万+笔记 · 新商务美学148亿浏览 · CleanFit搜索量增长52%</p>
+  <p><span class="trend-tag trend-dy">抖音</span> 冰丝/凉感面料需求激增 · 亚麻古巴领衬衫夏季爆款 · 功能面料成为男装核心卖点</p>
+</div>
+</div>
+
+<!-- ===== 上传指引 ===== -->
+<div class="card">
+<h2>📸 店长操作指引</h2>
+<div class="highlight">
+  <strong>①</strong> 点击下方门店进入专属页面 → <strong>②</strong> 📷 拍照/上传产品搭配图 → <strong>③</strong> 🤖 AI自动识别品牌/色系/风格/面料 → <strong>④</strong> 选择选题 → 一键生成文案 → <strong>⑤</strong> 📤 生成发布级文案 → <strong>⑥</strong> 复制文案直接拍摄
 </div>
 </div>
 
 <!-- ===== 9店入口 ===== -->
 <div class="card" id="stores">
 <h2>🏪 9店专属页面</h2>
-<p style="font-size:.8em;color:var(--muted);margin-bottom:10px">点击进入各门店专属页面 → 📸上传产品图 → 🤖 AI智能体自动生成文案</p>
+<p style="font-size:.78em;color:var(--muted);margin-bottom:10px">每家门店配有独立AI智能体，城市变量自动适配</p>
 <div class="store-grid">
 
 <a href="stores/fuzhou.html" class="store-btn">
-<span class="sname">🏪 福州店</span>
-<span class="scity">📍 福州 · 鼓楼区</span>
-<span class="sbrands">老佛爷 · JOHN RICHMOND · 华伦天奴 · RR · GUDUTTI</span>
+  <span class="sname">🏪 福州店</span>
+  <span class="scity">📍 福州 · 鼓楼区</span>
+  <span class="sbrands">老佛爷 · JOHN RICHMOND · 华伦天奴 · RR · GUDUTTI</span>
 </a>
 
 <a href="stores/lianjiang.html" class="store-btn">
-<span class="sname">🏪 连江店</span>
-<span class="scity">📍 福州 · 连江县</span>
-<span class="sbrands">老佛爷 · JOHN RICHMOND · CNC · RR · GUDUTTI</span>
+  <span class="sname">🏪 连江店</span>
+  <span class="scity">📍 福州 · 连江县</span>
+  <span class="sbrands">老佛爷 · JOHN RICHMOND · CNC · RR · GUDUTTI</span>
 </a>
 
 <a href="stores/ningde.html" class="store-btn">
-<span class="sname">🏪 宁德店</span>
-<span class="scity">📍 宁德 · 蕉城区</span>
-<span class="sbrands">老佛爷 · JOHN RICHMOND · RR · GUDUTTI</span>
+  <span class="sname">🏪 宁德店</span>
+  <span class="scity">📍 宁德 · 蕉城区</span>
+  <span class="sbrands">老佛爷 · JOHN RICHMOND · RR · GUDUTTI</span>
 </a>
 
 <a href="stores/guiyang.html" class="store-btn">
-<span class="sname">🏪 贵阳店</span>
-<span class="scity">📍 贵阳 · 南明区</span>
-<span class="sbrands">CNC · JOHN RICHMOND · RR · GUDUTTI</span>
+  <span class="sname">🏪 贵阳店</span>
+  <span class="scity">📍 贵阳 · 南明区</span>
+  <span class="sbrands">CNC · JOHN RICHMOND · RR · GUDUTTI</span>
 </a>
 
 <a href="stores/zunyi.html" class="store-btn">
-<span class="sname">🏪 遵义店</span>
-<span class="scity">📍 遵义 · 红花岗区</span>
-<span class="sbrands">CNC · JOHN RICHMOND · RR · GUDUTTI</span>
+  <span class="sname">🏪 遵义店</span>
+  <span class="scity">📍 遵义 · 红花岗区</span>
+  <span class="sbrands">CNC · JOHN RICHMOND · RR · GUDUTTI</span>
 </a>
 
 <a href="stores/tongren-jinjiang.html" class="store-btn">
-<span class="sname">🏪 铜仁锦江店</span>
-<span class="scity">📍 铜仁 · 碧江区 · 锦江</span>
-<span class="sbrands">老佛爷 · JOHN RICHMOND · RR · GUDUTTI</span>
+  <span class="sname">🏪 铜仁锦江店</span>
+  <span class="scity">📍 铜仁 · 碧江区 · 锦江</span>
+  <span class="sbrands">老佛爷 · JOHN RICHMOND · RR · GUDUTTI</span>
 </a>
 
 <a href="stores/tongren-jintan.html" class="store-btn">
-<span class="sname">🏪 铜仁金滩店</span>
-<span class="scity">📍 铜仁 · 碧江区 · 金滩</span>
-<span class="sbrands">老佛爷 · JOHN RICHMOND · RR · GUDUTTI</span>
+  <span class="sname">🏪 铜仁金滩店</span>
+  <span class="scity">📍 铜仁 · 碧江区 · 金滩</span>
+  <span class="sbrands">老佛爷 · JOHN RICHMOND · RR · GUDUTTI</span>
 </a>
 
 <a href="stores/duyun.html" class="store-btn">
-<span class="sname">🏪 都匀店</span>
-<span class="scity">📍 黔南 · 都匀市</span>
-<span class="sbrands">老佛爷 · RR · GUDUTTI</span>
+  <span class="sname">🏪 都匀店</span>
+  <span class="scity">📍 黔南 · 都匀市</span>
+  <span class="sbrands">老佛爷 · RR · GUDUTTI</span>
 </a>
 
 <a href="stores/anshun-xiyuan.html" class="store-btn">
-<span class="sname">🏪 西苑店</span>
-<span class="scity">📍 安顺 · 西秀区 · 西苑</span>
-<span class="sbrands">老佛爷 · JOHN RICHMOND · RR · GUDUTTI</span>
+  <span class="sname">🏪 西苑店</span>
+  <span class="scity">📍 安顺 · 西秀区 · 西苑</span>
+  <span class="sbrands">老佛爷 · JOHN RICHMOND · RR · GUDUTTI</span>
 </a>
 
 </div>
 </div>
 
-<!-- ===== 历史周报 ===== -->
-<div class="card">
-<h2>📚 历史周报归档</h2>
-<ul style="font-size:.85em;padding-left:16px;color:var(--muted)">
-<li><a href="weekly/2026-W25.html" style="color:var(--blue)">2026年第25周</a> — 父亲节 + 夏至 · 老钱风/松弛感/重磅T恤</li>
-</ul>
-</div>
-
 <div class="footer">
-🤖 仟徒男装9店智能选题系统 · 每周日自动更新 · GitHub Pages 托管<br>
-📸 店长上传 → AI自动生成 → 审核发布 | <a href="shortcuts/install.html" style="color:var(--green)">📲 安装快捷指令</a><br>
-数据来源：抖音热搜 · 微博热搜 · 小红书趋势 · 电商大促日历
+  仟徒男装9店智能选题系统 · 每周自动更新 · 数据来源：抖音热搜 / 小红书趋势 / 电商大促日历<br>
+  📸 店长上传 → AI自动识别 → 选题匹配 → 生成文案 → 审核发布<br>
+  视觉设计：轻奢男装品牌调性 · 金色点缀 · 克制质感
 </div>
 </body>
 </html>
