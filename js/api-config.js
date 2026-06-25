@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://concerns-dramatically-deaths-wife.trycloudflare.com';
+window.__API_URL__ = 'http://192.168.3.196:8899';
