@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://increasing-houston-phenomenon-organised.trycloudflare.com';
+window.__API_URL__ = 'https://coupon-touring-participate-proposal.trycloudflare.com';
