@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://knew-reading-reviews-missions.trycloudflare.com';
+window.__API_URL__ = 'https://annotation-lowest-chamber-dresses.trycloudflare.com';
