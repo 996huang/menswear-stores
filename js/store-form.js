@@ -266,9 +266,35 @@
   }
 
   async function callWorkerAPI() {
-    // 优先从动态配置读取URL（api-config.js 秒级更新）
-    // 回退到HTML内嵌的 data-worker-url
+    // 优先直连 AI（最快最稳定），服务器作为备选
     var workerUrl = window.__API_URL__ || (els.form ? els.form.dataset.workerUrl : '');
+    var storeId = els.form ? els.form.dataset.storeId : '';
+    var storeName = els.form ? els.form.dataset.storeName : '';
+    var storeBrands = els.form ? els.form.dataset.storeBrands : '';
+
+    var productInfo = {
+      name: getVal('prod-name'),
+      brand: getVal('prod-brand'),
+      notes: getVal('prod-notes')
+    };
+
+    // 压缩图片
+    setPhase('uploading');
+    var compressedImages = [];
+    for (var i = 0; i < state.selectedImages.length; i++) {
+      var compressed = await compressImage(state.selectedImages[i].dataUrl, 1024, 0.8);
+      compressedImages.push(compressed);
+    }
+
+    setPhase('analyzing');
+
+    // 先尝试直连 AI（国内API，任何网络都通）
+    try {
+      var directResult = await callDirectAPI(compressedImages, storeId, storeName, storeBrands, productInfo, 'product', null);
+      return directResult;
+    } catch(e1) {
+      // 直连失败，尝试服务器
+    }
 
     // 如果当前页面是 HTTPS (GitHub Pages)，但 API 是 HTTP，会被浏览器拦截
     if (window.location.protocol === 'https:' && workerUrl && workerUrl.startsWith('http:')) {
