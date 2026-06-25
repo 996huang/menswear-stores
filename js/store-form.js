@@ -192,10 +192,11 @@
 
   // ===== 调用 API（自动适配本地/远程） =====
   async function callWorkerAPI() {
-    var workerUrl = els.form ? els.form.dataset.workerUrl : '';
+    // 优先从动态配置读取URL（api-config.js 秒级更新）
+    // 回退到HTML内嵌的 data-worker-url
+    var workerUrl = window.__API_URL__ || (els.form ? els.form.dataset.workerUrl : '');
 
     // 如果当前页面是 HTTPS (GitHub Pages)，但 API 是 HTTP，会被浏览器拦截
-    // 提示用户打开本地地址
     if (window.location.protocol === 'https:' && workerUrl && workerUrl.startsWith('http:')) {
       var localPath = window.location.pathname;
       throw new Error(
