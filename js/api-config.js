@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://annotation-lowest-chamber-dresses.trycloudflare.com';
+window.__API_URL__ = 'https://addressing-dependent-abu-identifies.trycloudflare.com';
