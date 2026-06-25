@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://driven-educators-cleaner-byte.trycloudflare.com';
+window.__API_URL__ = 'https://concerns-dramatically-deaths-wife.trycloudflare.com';
