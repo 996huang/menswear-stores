@@ -293,93 +293,36 @@
       var directResult = await callDirectAPI(compressedImages, storeId, storeName, storeBrands, productInfo, 'product', null);
       return directResult;
     } catch(e1) {
-      // 直连失败，尝试服务器
+      // 直连失败，尝试局域网服务器
     }
 
-    // 如果当前页面是 HTTPS (GitHub Pages)，但 API 是 HTTP，会被浏览器拦截
-    if (window.location.protocol === 'https:' && workerUrl && workerUrl.startsWith('http:')) {
-      var localPath = window.location.pathname;
-      throw new Error(
-        '请在手机浏览器打开本地地址：\\n' + workerUrl + localPath + '\\n\\n' +
-        '（确保手机和电脑连接同一WiFi）'
-      );
-    }
-
-    // 本地 HTTP 服务器上运行时，使用同源地址
-    if (window.location.protocol === 'http:') {
-      workerUrl = window.location.origin;
-    }
-
+    // 服务器作为备选方案
     if (!workerUrl || workerUrl === '__WORKER_URL__') {
       throw new Error('AI 服务未配置，请先部署 API 服务器');
     }
-
-    var storeId = els.form ? els.form.dataset.storeId : '';
-    var storeName = els.form ? els.form.dataset.storeName : '';
-    var storeBrands = els.form ? els.form.dataset.storeBrands : '';
-
-    // 压缩图片
-    setPhase('uploading');
-    var compressedImages = [];
-    for (var i = 0; i < state.selectedImages.length; i++) {
-      var compressed = await compressImage(state.selectedImages[i].dataUrl, 1024, 0.8);
-      compressedImages.push(compressed);
+    if (window.location.protocol === 'http:') workerUrl = window.location.origin;
+    if (window.location.protocol === 'https:' && workerUrl && workerUrl.startsWith('http:')) {
+      throw new Error('请用局域网地址打开：' + workerUrl + window.location.pathname);
     }
 
-    // 收集表单数据
-    setPhase('analyzing');
-    var productInfo = {
-      name: getVal('prod-name'),
-      brand: getVal('prod-brand'),
-      notes: getVal('prod-notes')
-    };
-
-    // 调用 Worker
-    var controller = new AbortController();
-    var timeout = setTimeout(function() { controller.abort(); }, 90000); // 90s timeout
-
-    // 最多重试3次，每次间隔3秒
-    var maxRetries = 3;
-    var lastError = null;
-
-    for (var attempt = 1; attempt <= maxRetries; attempt++) {
+    for (var attempt = 1; attempt <= 2; attempt++) {
       try {
         var response = await fetch(workerUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            images: compressedImages,
-            storeId: storeId,
-            storeName: storeName,
-            brands: storeBrands,
-            productInfo: productInfo
-          }),
-          signal: controller.signal
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ images: compressedImages, storeId, storeName, brands: storeBrands, productInfo }),
+          signal: AbortSignal.timeout(90000)
         });
-        clearTimeout(timeout);
-
         if (!response.ok) {
-          var errData;
-          try { errData = await response.json(); } catch (e) { errData = { error: 'HTTP ' + response.status }; }
-          throw new Error(errData.error || '请求失败 (' + response.status + ')');
+          var ed; try { ed = await response.json(); } catch(e) { ed = {error:'HTTP '+response.status}; }
+          throw new Error(ed.error || '请求失败');
         }
-
         return await response.json();
-      } catch (e) {
-        clearTimeout(timeout);
-        lastError = e;
-        if (e.name === 'AbortError') lastError = new Error('请求超时，请检查网络后重试');
-        if (attempt < maxRetries) await new Promise(function(r) { setTimeout(r, 3000); });
+      } catch(e) {
+        if (attempt >= 2) throw new Error('AI服务不可用：' + (e.message || '请重试'));
+        await new Promise(function(r) { setTimeout(r, 2000); });
       }
     }
-    // 服务器不可用 → 浏览器直连AI（最终兜底）
-    setPhase('analyzing');
-    try {
-      var directResult = await callDirectAPI(compressedImages, storeId, storeName, storeBrands, productInfo, mode || 'product', null);
-      return directResult;
-    } catch (e2) {
-      throw new Error('AI服务暂时不可用（服务器和直连均失败），请检查网络后重试');
-    }
+    throw new Error('AI服务不可用，请重试');
   }
 
   function getVal(id) {
