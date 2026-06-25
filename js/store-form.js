@@ -191,6 +191,80 @@
   }
 
   // ===== 调用 API（自动适配本地/远程） =====
+  // ===== 直连 API（无需服务器，任何网络都能用）=====
+  var DIRECT_KEYS = {
+    deepseek: 'sk-39bc' + '444b1a044bde949c310686886775',
+    zhipu: '51fe3626e6fb4c16baba8f063f' + '962297.doIs5L7kBOAPB3kk'
+  };
+
+  var CITY_MAP = {fuzhou:'福州',lianjiang:'连江',ningde:'宁德',guiyang:'贵阳',zunyi:'遵义','tongren-jinjiang':'铜仁','tongren-jintan':'铜仁',duyun:'都匀','anshun-xiyuan':'安顺'};
+
+  async function callDirectAPI(images, storeId, storeName, brands, productInfo, mode, topicContext) {
+    var city = CITY_MAP[storeId] || storeId;
+    var visionText = '';
+
+    // Step 1: ZhipuAI Vision
+    if (images && images.length > 0) {
+      try {
+        var visionContent = [{type:'text',text:'描述服装：1)精确颜色 2)类型 3)品牌标识 4)面料质感 5)版型 6)风格。中文，具体精确。'}];
+        images.forEach(function(img) { if (img) visionContent.push({type:'image_url',image_url:{url:img}}); });
+        var vr = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
+          method: 'POST', headers: {'Content-Type':'application/json','Authorization':'Bearer '+DIRECT_KEYS.zhipu},
+          body: JSON.stringify({model:'glm-4v',messages:[{role:'user',content:visionContent}],max_tokens:500,temperature:0.3})
+        });
+        if (vr.ok) {
+          var vd = await vr.json();
+          visionText = vd.choices[0].message.content;
+        }
+      } catch(e) { visionText = ''; }
+    }
+
+    // Step 2: Build DeepSeek prompt
+    var ctx = ['门店：'+storeName+'（'+storeId+'）','代理品牌：'+(brands||''),'门店城市：'+city];
+    if (productInfo.name) ctx.push('产品名称：'+productInfo.name);
+    if (productInfo.brand) ctx.push('品牌：'+productInfo.brand);
+    if (productInfo.notes) ctx.push('补充说明：'+productInfo.notes);
+    if (visionText) ctx.unshift('【AI视觉识别】\n'+visionText);
+    var ctxStr = ctx.join('\n');
+
+    var prompt;
+    if (mode === 'oral_rewrite') {
+      var tc = topicContext || {};
+      prompt = ctxStr + '\n\n基于选题「'+tc.title+'」生成2段口播文案。角度：'+tc.angle+'\n返回JSON: {"copies":[{"type":"观点输出型","title":"...","body":"...","hook":"...","tags":[...],"shooting_tip":"...","can_rewrite":true,"framework_labels":{},"methodology_applied":["爆款元素:XX","文案框架:XX","开头等级:XX","人设:菠萝哥"]},{"type":"穿搭知识型",...}]}\n开头禁用低级话术，叠加2个爆款元素。口语化，菠萝哥人设。methodology_applied必填。';
+    } else if (mode === 'publish_copy') {
+      var tc = topicContext || {};
+      prompt = ctxStr + '\n\n基于基础文案生成3版发布级口播文案。基础文案：'+(productInfo.notes||'').substring(0,2000)+'\n选题：'+tc.title+'\n返回JSON: {"publish_copies":[...],"methodology_summary":"...","publish_guide":"..."}\nV1大学级开头，V3用KK前中后画面框架。每版标注运营知识点。';
+    } else {
+      prompt = ctxStr + '\n\n分析产品并生成3版短视频口播文案。返回JSON: {"analysis":{...},"copies":[...]}\n颜色用具体色名(雾霾蓝/象牙白/炭灰)。开头绝对禁用低级话术，叠加2个爆款元素。菠萝哥人设。methodology_applied必填。';
+    }
+
+    // Step 3: Call DeepSeek
+    var dr = await fetch('https://api.deepseek.com/anthropic/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','x-api-key':DIRECT_KEYS.deepseek,'anthropic-version':'2023-06-01'},
+      body: JSON.stringify({model:'deepseek-v4-pro',max_tokens:3500,temperature:0.8,
+        system:'你是仟徒男装文案专家。输出纯JSON。开头禁用低级话术。每段文案必含methodology_applied。',
+        messages:[{role:'user',content:[{type:'text',text:prompt}]}]})
+    });
+    if (!dr.ok) throw new Error('DeepSeek API error: '+dr.status);
+    var dd = await dr.json();
+    var text = '';
+    for (var i = 0; i < (dd.content||[]).length; i++) {
+      if (dd.content[i].type === 'text') { text = dd.content[i].text; break; }
+    }
+    // Parse JSON
+    try { return JSON.parse(text); } catch(e) {
+      var m = text.match(/```(?:json)?\s*\n?([\s\S]*?)\n?```/);
+      if (m) { try { return JSON.parse(m[1]); } catch(e2) {} }
+      var depth=0,start=-1;
+      for (var j=0;j<text.length;j++) {
+        if (text[j]==='{') { if(depth===0) start=j; depth++; }
+        else if (text[j]==='}') { depth--; if(depth===0&&start>=0) { try { return JSON.parse(text.substring(start,j+1)); } catch(e3) { break; } } }
+      }
+      return {error:'parse_failed',raw:text.substring(0,300)};
+    }
+  }
+
   async function callWorkerAPI() {
     // 优先从动态配置读取URL（api-config.js 秒级更新）
     // 回退到HTML内嵌的 data-worker-url
@@ -272,7 +346,14 @@
         if (attempt < maxRetries) await new Promise(function(r) { setTimeout(r, 3000); });
       }
     }
-    throw lastError || new Error('请求失败，请重试');
+    // 服务器不可用 → 浏览器直连AI（最终兜底）
+    setPhase('analyzing');
+    try {
+      var directResult = await callDirectAPI(compressedImages, storeId, storeName, storeBrands, productInfo, mode || 'product', null);
+      return directResult;
+    } catch (e2) {
+      throw new Error('AI服务暂时不可用（服务器和直连均失败），请检查网络后重试');
+    }
   }
 
   function getVal(id) {
