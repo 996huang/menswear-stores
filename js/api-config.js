@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://promises-hire-aircraft-fioricet.trycloudflare.com';
+window.__API_URL__ = 'https://alias-nuts-logo-consult.trycloudflare.com';
