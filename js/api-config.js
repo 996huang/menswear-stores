@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://duration-covering-proc-trivia.trycloudflare.com';
+window.__API_URL__ = 'https://bookstore-wake-associations-classification.trycloudflare.com';
