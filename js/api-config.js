@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://dentists-atlas-badly-discretion.trycloudflare.com';
+window.__API_URL__ = 'https://seventh-lemon-recovery-every.trycloudflare.com';
