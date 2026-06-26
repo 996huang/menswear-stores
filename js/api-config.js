@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://patch-affiliate-paths-arizona.trycloudflare.com';
+window.__API_URL__ = 'https://min-event-defence-disciplines.trycloudflare.com';
