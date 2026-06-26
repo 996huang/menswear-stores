@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://bookstore-wake-associations-classification.trycloudflare.com';
+window.__API_URL__ = 'https://bay-fisheries-lesser-refinance.trycloudflare.com';
