@@ -339,7 +339,8 @@
           '</div>';
       }
 
-      html += '<div class="copy-card">' +
+      var fbId = 'fb-' + Date.now() + '-' + i;
+      html += '<div class="copy-card" data-feedback-id="' + fbId + '">' +
         '<div class="copy-card-header">' +
         '<span class="copy-type-badge ' + (typeColors[i] || '') + '">' + copy.type + '</span>' +
         '<button class="copy-btn-icon" data-idx="' + i + '" title="复制此版文案" type="button">📋 复制</button>' +
@@ -350,6 +351,17 @@
         shootingHtml +
         methodHtml +
         '<div class="copy-tags">' + tagsHtml + '</div>' +
+        '<div class="copy-feedback">' +
+        '<button class="feedback-btn feedback-good" data-id="' + fbId + '">👍 用了</button>' +
+        '<button class="feedback-btn feedback-bad" data-id="' + fbId + '">👎 不理想</button>' +
+        '<div class="feedback-reason" id="reason-' + fbId + '">' +
+        '<button class="reason-chip" data-reason="太正式">太正式</button>' +
+        '<button class="reason-chip" data-reason="太口语">太口语</button>' +
+        '<button class="reason-chip" data-reason="太长">太长</button>' +
+        '<button class="reason-chip" data-reason="太短">太短</button>' +
+        '<button class="reason-chip" data-reason="不贴产品">不贴产品</button>' +
+        '</div>' +
+        '</div>' +
         '</div>';
     });
     els.copyCards.innerHTML = html;
@@ -1148,6 +1160,55 @@
     });
   }
 
+  // ===== 文案反馈 =====
+  function initFeedbackButtons() {
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.feedback-btn');
+      if (!btn) return;
+      var id = btn.dataset.id;
+      var card = document.querySelector('[data-feedback-id="' + id + '"]');
+      if (!card) return;
+
+      // Toggle good
+      if (btn.classList.contains('feedback-good')) {
+        btn.classList.toggle('active-good');
+        card.querySelector('.feedback-bad').classList.remove('active-bad');
+        card.querySelector('.feedback-reason').classList.remove('show');
+        var fb = JSON.parse(localStorage.getItem('copy_feedback') || '{}');
+        fb[id] = 'good';
+        localStorage.setItem('copy_feedback', JSON.stringify(fb));
+      }
+
+      // Toggle bad → show reasons
+      if (btn.classList.contains('feedback-bad')) {
+        var isActive = btn.classList.toggle('active-bad');
+        card.querySelector('.feedback-good').classList.remove('active-good');
+        var reasonDiv = card.querySelector('.feedback-reason');
+        if (isActive) {
+          reasonDiv.classList.add('show');
+        } else {
+          reasonDiv.classList.remove('show');
+        }
+      }
+
+      // Reason chip click
+      var chip = e.target.closest('.reason-chip');
+      if (chip) {
+        chip.classList.toggle('selected');
+        var fb = JSON.parse(localStorage.getItem('copy_feedback') || '{}');
+        fb[id] = fb[id] || {};
+        if (typeof fb[id] === 'string') fb[id] = {rating: fb[id]};
+        fb[id].rating = 'bad';
+        if (!fb[id].reasons) fb[id].reasons = [];
+        var reason = chip.dataset.reason;
+        var idx = fb[id].reasons.indexOf(reason);
+        if (idx >= 0) fb[id].reasons.splice(idx, 1);
+        else fb[id].reasons.push(reason);
+        localStorage.setItem('copy_feedback', JSON.stringify(fb));
+      }
+    });
+  }
+
   // ===== 发布文案重试 =====
   function initPublishRetryButtons() {
     document.querySelectorAll('.btn-retry-publish').forEach(function(btn) {
@@ -1178,6 +1239,7 @@
     initPublishRetryButtons();
     initCopyCodeButtons();
     initWechatDetection();
+    initFeedbackButtons();
 
     // 初始状态
     setPhase('idle');
