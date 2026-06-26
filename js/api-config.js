@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://advised-extent-racing-combines.trycloudflare.com';
+window.__API_URL__ = 'https://flags-developing-porcelain-eden.trycloudflare.com';
