@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://factor-regards-suggested-sweet.trycloudflare.com';
+window.__API_URL__ = 'https://patch-affiliate-paths-arizona.trycloudflare.com';
