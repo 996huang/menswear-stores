@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://specification-cathedral-ties-britain.trycloudflare.com';
+window.__API_URL__ = 'https://advised-extent-racing-combines.trycloudflare.com';
