@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://seventh-lemon-recovery-every.trycloudflare.com';
+window.__API_URL__ = 'https://heavy-racial-passage-pleased.trycloudflare.com';
