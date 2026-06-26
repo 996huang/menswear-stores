@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://spatial-substantial-pharmacology-dialog.trycloudflare.com';
+window.__API_URL__ = 'https://duration-covering-proc-trivia.trycloudflare.com';
