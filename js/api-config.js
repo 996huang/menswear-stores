@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://walnut-champion-prostate-breed.trycloudflare.com';
+window.__API_URL__ = 'https://cornwall-hamburg-episodes-signed.trycloudflare.com';
