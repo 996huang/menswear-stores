@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://assignment-barrier-obviously-yearly.trycloudflare.com';
+window.__API_URL__ = 'https://oakland-creature-acting-euros.trycloudflare.com';
