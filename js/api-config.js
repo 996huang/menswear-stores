@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://salmon-survive-crimes-moderate.trycloudflare.com';
+window.__API_URL__ = 'https://intake-drop-courier-quick.trycloudflare.com';
