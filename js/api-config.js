@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://every-examples-brake-trigger.trycloudflare.com';
+window.__API_URL__ = 'https://expense-hydraulic-ppc-learners.trycloudflare.com';
