@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://creations-mardi-plug-projectors.trycloudflare.com';
+window.__API_URL__ = 'https://spouse-now-kong-insulation.trycloudflare.com';
