@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://granted-enclosure-analog-reprints.trycloudflare.com';
+window.__API_URL__ = 'https://salmon-survive-crimes-moderate.trycloudflare.com';
