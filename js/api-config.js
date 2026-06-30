@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://expense-hydraulic-ppc-learners.trycloudflare.com';
+window.__API_URL__ = 'https://cakes-levels-memories-necklace.trycloudflare.com';
