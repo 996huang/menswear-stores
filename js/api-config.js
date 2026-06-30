@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://api.trycloudflare.com';
+window.__API_URL__ = 'https://wiki-important-usual-compliant.trycloudflare.com';
