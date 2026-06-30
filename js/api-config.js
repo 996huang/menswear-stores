@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://friend-guides-hammer-immediate.trycloudflare.com';
+window.__API_URL__ = 'https://poems-meaning-origins-rogers.trycloudflare.com';
