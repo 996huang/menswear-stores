@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://antarctica-customise-extends-condition.trycloudflare.com';
+window.__API_URL__ = 'https://friend-guides-hammer-immediate.trycloudflare.com';
