@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://villages-native-superior-lip.trycloudflare.com';
+window.__API_URL__ = 'https://federation-plans-nathan-physiology.trycloudflare.com';
