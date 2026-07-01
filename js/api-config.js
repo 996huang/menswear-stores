@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://ranked-printer-drives-ask.trycloudflare.com';
+window.__API_URL__ = 'https://gdp-shoulder-offering-translated.trycloudflare.com';
