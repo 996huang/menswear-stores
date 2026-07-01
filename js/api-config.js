@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://content-scuba-bloom-cost.trycloudflare.com';
+window.__API_URL__ = 'https://mic-rated-resolutions-vault.trycloudflare.com';
