@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://signs-looks-classified-trainers.trycloudflare.com';
+window.__API_URL__ = 'https://flows-general-ribbon-minimal.trycloudflare.com';
