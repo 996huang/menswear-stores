@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://told-retired-bases-volunteers.trycloudflare.com';
+window.__API_URL__ = 'https://columns-rent-ruby-bend.trycloudflare.com';
