@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://flows-general-ribbon-minimal.trycloudflare.com';
+window.__API_URL__ = 'https://content-scuba-bloom-cost.trycloudflare.com';
