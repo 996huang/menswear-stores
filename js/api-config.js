@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://api.trycloudflare.com';
+window.__API_URL__ = 'https://integer-rug-nhs-pickup.trycloudflare.com';
