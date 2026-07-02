@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://dod-sports-veterans-wives.trycloudflare.com';
+window.__API_URL__ = 'https://div-mistakes-size-wearing.trycloudflare.com';
