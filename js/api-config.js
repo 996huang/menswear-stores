@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://div-mistakes-size-wearing.trycloudflare.com';
+window.__API_URL__ = 'https://press-connect-making-talented.trycloudflare.com';
