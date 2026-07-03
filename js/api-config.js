@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://windsor-leeds-mineral-fighter.trycloudflare.com';
+window.__API_URL__ = 'https://buffer-anniversary-notifications-prague.trycloudflare.com';
