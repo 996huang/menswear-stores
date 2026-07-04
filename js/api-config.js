@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://buy-plains-eden-moss.trycloudflare.com';
+window.__API_URL__ = 'https://horizontal-reading-stan-gradually.trycloudflare.com';
