@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://thinks-likelihood-assignment-construction.trycloudflare.com';
+window.__API_URL__ = 'https://concord-overseas-martin-prague.trycloudflare.com';
