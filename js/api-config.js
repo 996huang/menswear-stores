@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://sensors-strict-andy-looks.trycloudflare.com';
+window.__API_URL__ = 'https://clicks-lottery-marina-banners.trycloudflare.com';
