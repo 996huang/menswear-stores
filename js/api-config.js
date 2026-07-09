@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://quilt-qualification-hanging-wilson.trycloudflare.com';
+window.__API_URL__ = 'https://api.trycloudflare.com';
