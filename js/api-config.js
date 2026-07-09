@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://principle-trusts-intelligence-lookup.trycloudflare.com';
+window.__API_URL__ = 'https://vocational-shops-margaret-economies.trycloudflare.com';
