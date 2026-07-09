@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://announce-bargain-draws-persian.trycloudflare.com';
+window.__API_URL__ = 'https://lucky-maximize-greene-wines.trycloudflare.com';
