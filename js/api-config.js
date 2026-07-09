@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://era-telephone-sales-assumption.trycloudflare.com';
+window.__API_URL__ = 'https://remind-developers-pills-phrase.trycloudflare.com';
