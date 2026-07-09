@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://vocational-shops-margaret-economies.trycloudflare.com';
+window.__API_URL__ = 'https://damages-busy-relay-fabrics.trycloudflare.com';
