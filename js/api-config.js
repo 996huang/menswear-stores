@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://walk-defence-democrats-cargo.trycloudflare.com';
+window.__API_URL__ = 'https://salem-victoria-individual-male.trycloudflare.com';
