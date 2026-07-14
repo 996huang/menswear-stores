@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://imports-lesser-feeling-investigators.trycloudflare.com';
+window.__API_URL__ = 'https://distinct-groove-light-servers.trycloudflare.com';
