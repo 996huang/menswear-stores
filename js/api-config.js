@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://tide-wide-solutions-ecological.trycloudflare.com';
+window.__API_URL__ = 'https://imports-lesser-feeling-investigators.trycloudflare.com';
