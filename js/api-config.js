@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://revised-houston-drawing-prominent.trycloudflare.com';
+window.__API_URL__ = 'https://api.trycloudflare.com';
