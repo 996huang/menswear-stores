@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://singer-based-dry-msgid.trycloudflare.com';
+window.__API_URL__ = 'https://vancouver-screenshots-witch-destinations.trycloudflare.com';
