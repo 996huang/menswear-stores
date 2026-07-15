@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://href-emerging-republicans-bytes.trycloudflare.com';
+window.__API_URL__ = 'https://attitude-hoping-fewer-harder.trycloudflare.com';
