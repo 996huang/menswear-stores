@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://ericsson-nutten-correspondence-hosting.trycloudflare.com';
+window.__API_URL__ = 'https://cigarette-studios-merely-designation.trycloudflare.com';
