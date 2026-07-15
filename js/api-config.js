@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://default-relative-orientation-psi.trycloudflare.com';
+window.__API_URL__ = 'https://rapid-ceremony-launch-chapel.trycloudflare.com';
