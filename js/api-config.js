@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://testament-operations-seasons-supporting.trycloudflare.com';
+window.__API_URL__ = 'https://ericsson-nutten-correspondence-hosting.trycloudflare.com';
