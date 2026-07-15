@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://beliefs-charm-diet-spread.trycloudflare.com';
+window.__API_URL__ = 'https://gather-smoke-rest-punch.trycloudflare.com';
