@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://resistance-gbp-described-oct.trycloudflare.com';
+window.__API_URL__ = 'https://sydney-gmc-nest-printable.trycloudflare.com';
