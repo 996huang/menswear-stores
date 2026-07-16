@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://original-judges-small-offline.trycloudflare.com';
+window.__API_URL__ = 'https://resistance-gbp-described-oct.trycloudflare.com';
