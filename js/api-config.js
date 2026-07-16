@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://rapid-ceremony-launch-chapel.trycloudflare.com';
+window.__API_URL__ = 'https://speakers-trainers-inputs-stones.trycloudflare.com';
