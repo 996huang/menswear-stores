@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://opera-basin-debian-surface.trycloudflare.com';
+window.__API_URL__ = 'https://api.trycloudflare.com';
