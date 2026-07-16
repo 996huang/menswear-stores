@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://speakers-trainers-inputs-stones.trycloudflare.com';
+window.__API_URL__ = 'https://original-judges-small-offline.trycloudflare.com';
