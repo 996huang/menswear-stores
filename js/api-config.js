@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://trip-somewhere-enb-bath.trycloudflare.com';
+window.__API_URL__ = 'https://transcription-comparative-calculations-fragrances.trycloudflare.com';
