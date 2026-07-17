@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://reuters-consolidated-unable-launched.trycloudflare.com';
+window.__API_URL__ = 'https://shots-carries-waiting-rear.trycloudflare.com';
