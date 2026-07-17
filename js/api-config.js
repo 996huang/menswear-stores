@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://kidney-browse-demands-reception.trycloudflare.com';
+window.__API_URL__ = 'https://fig-dsl-asian-directions.trycloudflare.com';
