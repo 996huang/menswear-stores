@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://shots-carries-waiting-rear.trycloudflare.com';
+window.__API_URL__ = 'https://kidney-browse-demands-reception.trycloudflare.com';
