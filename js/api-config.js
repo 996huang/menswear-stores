@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://considerations-convenience-generic-dry.trycloudflare.com';
+window.__API_URL__ = 'https://numerous-roles-victoria-laser.trycloudflare.com';
