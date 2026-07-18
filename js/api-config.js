@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://dodge-totals-component-apply.trycloudflare.com';
+window.__API_URL__ = 'https://empty-vitamins-volvo-station.trycloudflare.com';
