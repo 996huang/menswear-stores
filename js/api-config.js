@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://numerous-roles-victoria-laser.trycloudflare.com';
+window.__API_URL__ = 'https://dodge-totals-component-apply.trycloudflare.com';
