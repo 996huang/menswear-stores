@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://served-pda-catalyst-commissioners.trycloudflare.com';
+window.__API_URL__ = 'https://api.trycloudflare.com';
