@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://ddr-crimes-hometown-wellness.trycloudflare.com';
+window.__API_URL__ = 'https://prefix-fig-huge-example.trycloudflare.com';
