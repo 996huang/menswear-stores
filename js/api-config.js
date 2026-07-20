@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://imagine-supreme-enrollment-bow.trycloudflare.com';
+window.__API_URL__ = 'https://glow-considerable-serial-muslim.trycloudflare.com';
