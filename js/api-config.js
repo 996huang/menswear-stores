@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://blocking-comparison-allowing-johns.trycloudflare.com';
+window.__API_URL__ = 'https://lovers-ease-seniors-arabic.trycloudflare.com';
