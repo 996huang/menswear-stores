@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://arabia-dsc-warning-savings.trycloudflare.com';
+window.__API_URL__ = 'https://fireplace-pig-congratulations-hormone.trycloudflare.com';
