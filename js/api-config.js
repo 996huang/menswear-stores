@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://mpg-curriculum-revelation-surge.trycloudflare.com';
+window.__API_URL__ = 'https://compared-arrivals-robots-trio.trycloudflare.com';
