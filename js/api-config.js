@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://trainer-about-info-but.trycloudflare.com';
+window.__API_URL__ = 'https://pharmacies-ads-vaccine-stunning.trycloudflare.com';
