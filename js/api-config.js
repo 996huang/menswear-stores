@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://compared-arrivals-robots-trio.trycloudflare.com';
+window.__API_URL__ = 'https://fits-portraits-collectables-eastern.trycloudflare.com';
