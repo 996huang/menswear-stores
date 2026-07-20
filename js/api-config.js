@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://lake-rounds-allows-excellence.trycloudflare.com';
+window.__API_URL__ = 'https://drug-phys-calm-memorabilia.trycloudflare.com';
