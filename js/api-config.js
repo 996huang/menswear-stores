@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://fits-portraits-collectables-eastern.trycloudflare.com';
+window.__API_URL__ = 'https://adware-quantities-manitoba-books.trycloudflare.com';
