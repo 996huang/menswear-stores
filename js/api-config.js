@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://edinburgh-tramadol-totally-ins.trycloudflare.com';
+window.__API_URL__ = 'https://trainer-about-info-but.trycloudflare.com';
