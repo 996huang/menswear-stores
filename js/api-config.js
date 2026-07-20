@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://pleasant-namespace-rangers-recorded.trycloudflare.com';
+window.__API_URL__ = 'https://westminster-milton-brands-clicks.trycloudflare.com';
