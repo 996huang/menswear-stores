@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://com-divisions-delayed-luck.trycloudflare.com';
+window.__API_URL__ = 'https://mpg-curriculum-revelation-surge.trycloudflare.com';
