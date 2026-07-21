@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://respected-proprietary-toll-now.trycloudflare.com';
+window.__API_URL__ = 'https://talked-cgi-attractions-phones.trycloudflare.com';
