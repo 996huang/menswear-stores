@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://talked-cgi-attractions-phones.trycloudflare.com';
+window.__API_URL__ = 'https://reserves-machine-reaches-daniel.trycloudflare.com';
