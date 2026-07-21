@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://quit-resolutions-counsel-protocols.trycloudflare.com';
+window.__API_URL__ = 'https://individual-right-adds-kurt.trycloudflare.com';
