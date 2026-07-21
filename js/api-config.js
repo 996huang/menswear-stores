@@ -1,1 +1,1 @@
-window.__API_URL__ = 'https://aircraft-winning-cod-practice.trycloudflare.com';
+window.__API_URL__ = 'https://api.trycloudflare.com';
